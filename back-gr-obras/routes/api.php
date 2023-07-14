@@ -9,6 +9,7 @@ use App\Http\Controllers\ObraController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\PresupuestoController;
 use App\Http\Controllers\ProfesionController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TrabajadorController;
 use App\Http\Controllers\UbigeoController;
 use App\Http\Controllers\ValorizacionController;
@@ -34,7 +35,8 @@ Route::get('saludo', function () {
     return response()->json(['message' => 'Hola mundo']);
 });
 
-Route::group(['prefix' => 'obras'], function () {
+Route::group(['prefix' => 'obras', 'middleware' => 'auth:api'], function () {
+    Route::apiResource('roles', RoleController::class);
     Route::apiResource('administrativos', AdministrativoController::class);
     Route::apiResource('archivos', ArchivoController::class);
     Route::apiResource('avance', AvanceController::class);

@@ -3,8 +3,9 @@ const routes = [
   {
     path: '/',
     component: () => import('layouts/AdminLayout.vue'),
+    meta: { requiresAuth: true },
     children: [
-      { path: '', name:'Dash', component: () => import('pages/Admin/HomeAdmin.vue') },
+      { path: '', name: 'Dash', component: () => import('pages/Admin/HomeAdmin.vue') },
       {
         path: "permisos",
         name: "Permisos",
@@ -15,13 +16,13 @@ const routes = [
         name: "Roles",
         component: () => import("src/pages/Admin/roles/RolesIndex.vue"),
       },
-      { path: '/profesiones', name:'Profesiones', component: () => import('pages/profesiones/ProfesionesLista.vue') }
+      { path: '/profesiones', name: 'Profesiones', component: () => import('pages/profesiones/ProfesionesLista.vue') }
     ]
   },
   {
     path: '/',
     component: () => import('layouts/AuthLayout.vue'),
-    children:[
+    children: [
       {
         path: 'login',
         name: 'Login',

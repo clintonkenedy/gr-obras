@@ -22,6 +22,7 @@ class ClientTokenSeeder extends Seeder
             'email' => 'password@gmail.com',
             'password'=>bcrypt('password'),
         ]);
+        $user->assignRole('Administrador');
 
        DB::table('oauth_clients')->insert([
            'name' => 'Laravel Password Grant Client',
