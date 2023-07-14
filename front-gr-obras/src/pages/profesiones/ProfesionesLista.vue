@@ -11,10 +11,13 @@
   </div>
 
   <div class="q-px-md">
-    <q-table flat bordered ref="tableRef"   tabindex="0" title="Lista de Profesiones" :rows="rows"
-      :columns="columns" row-key="name" v-model:selected="selected" v-model:pagination="pagination" :filter="filter"
-      @request="getData()"
+    <q-table flat bordered ref="tableRef" color="primary"  tabindex="0" title="Lista de Profesiones" :rows="rows"
+      :columns="columns" row-key="name" :selected="selected" :pagination="pagination" :filter="filter"
+      :loading="loading[2]"
       >
+      <template v-slot:loading>
+        <q-inner-loading showing color="primary" />
+      </template>
 
       <template v-slot:top-right>
         <q-input outlined borderless dense debounce="300" v-model="filter" placeholder="Buscar">
@@ -70,29 +73,17 @@
       </q-card-actions>
     </q-card>
   </q-dialog>
-
-  <q-dialog v-model="confirm" persistent>
-    <q-card style="width: 600px">
-      <q-card-section class="row items-center">
-        <q-avatar icon="warning" color="red" text-color="white" />
-        <span class="q-ml-sm">¿Estas seguro de eliminar este registro? Este proceso es irreversible.</span>
-      </q-card-section>
-
-      <q-separator />
-
-      <q-card-actions align="right">
-        <q-btn flat label="Cancelar" color="gray" v-close-popup />
-        <q-btn flat label="Eliminar" color="red" v-close-popup :loading="loading[1]" />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
 </template>
 
 <script setup>
-import { ref, onMounted, computed, nextTick, toRaw } from 'vue';
+import { ref, onMounted, computed, nextTick, toRaw, useAttrs } from 'vue';
 import ProfesionesForm from './ProfesionesForm.vue';
 import ProfesionesService from '../../services/ProfesionesService.js';
+// import useQuasar from 'quasar'
+import { useQuasar } from 'quasar'
 
+
+const $q = useQuasar();
 const columns = [
   {
     name: 'id',
@@ -115,7 +106,7 @@ const rows = ref([]);
     const elProfesionesForm = ref(null);
     const dialog = ref(false);
     const confirm = ref(false);
-    const loading = ref([false, false]);
+    const loading = ref([false, false,false]);
     const filter = ref("");
 
     //OnMounted
@@ -124,7 +115,10 @@ const rows = ref([]);
     });
 
     const getData = async ()=>{
+      loading.value[2]=true
       rows.value = (await ProfesionesService.getData()).data;
+      loading.value[2]=false
+
     }
 
     //Métodos
@@ -136,8 +130,28 @@ const rows = ref([]);
     };
 
     async function eliminar(id) {
-      await ProfesionesService.delete(id);
-      confirm.value = true;
+      $q.dialog({
+        title: 'Confirm',
+        message: '¿Estas seguro de eliminar este registro? Este proceso es irreversible.',
+        cancel: true,
+        persistent: true
+      }).onOk(async() => {
+        // console.log('>>>> OK')
+      loading.value[2]=true
+
+        await ProfesionesService.delete(id);
+        getData();
+      loading.value[2]=false
+
+
+      }).onOk(() => {
+        // console.log('>>>> second OK catcher')
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+
     }
 
     //DataTable
