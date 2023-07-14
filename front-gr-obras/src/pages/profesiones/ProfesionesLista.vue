@@ -12,8 +12,9 @@
 
   <div class="q-px-md">
     <q-table flat bordered ref="tableRef" color="primary" tabindex="0" title="Lista de Profesiones" :rows="rows"
-      :columns="columns" row-key="name" :selected="selected" :pagination="pagination" :filter="filter"
+      separator="horizontal" :columns="columns" row-key="name" :selected="selected" :pagination="pagination" :filter="filter"
       :loading="loading[2]">
+
       <template v-slot:loading>
         <q-inner-loading showing color="primary" />
       </template>
@@ -28,7 +29,7 @@
 
       <template v-slot:header="props">
         <q-tr :props="props">
-          <q-th v-for="col in props.cols" :key="col.name" :props="props">
+          <q-th style="{width: 30%;}" v-for="col in props.cols" :key="col.name" :props="props">
             {{ col.label }}
           </q-th>
           <q-th auto-width>
@@ -68,22 +69,21 @@
 
       <q-card-actions align="right">
         <q-btn flat label="Cancelar" color="gray" v-close-popup />
-        <q-btn flat label="Guardar" @click="elProfesionesForm.save()" color="primary" v-close-popup
-          :loading="loading[0]" />
+        <q-btn flat label="Guardar" @click="elProfesionesForm.save()" color="primary" :loading="loading[0]" />
       </q-card-actions>
     </q-card>
   </q-dialog>
 </template>
 
 <script setup>
-import { ref, onMounted, computed, nextTick, toRaw, useAttrs } from 'vue';
+import { ref, onMounted } from 'vue';
 import ProfesionesForm from './ProfesionesForm.vue';
 import ProfesionesService from '../../services/ProfesionesService.js';
-// import useQuasar from 'quasar'
 import { useQuasar } from 'quasar'
 
-
 const $q = useQuasar();
+
+//DataTable
 const columns = [
   {
     name: 'id',
@@ -100,12 +100,14 @@ const columns = [
     sortable: true
   },
 ];
-
 const rows = ref([]);
+const tableRef = ref(null);
+const pagination = ref({});
+const selected = ref([]);
+
 //Estados reactivos
 const elProfesionesForm = ref(null);
 const dialog = ref(false);
-const confirm = ref(false);
 const loading = ref([false, false, false]);
 const filter = ref("");
 
@@ -114,6 +116,7 @@ onMounted(() => {
   getData();
 });
 
+//Métodos
 const getData = async () => {
   loading.value[2] = true
   rows.value = (await ProfesionesService.getData()).data;
@@ -121,30 +124,30 @@ const getData = async () => {
 
 }
 
-//Métodos
 async function save(e) {
-  $q.dialog({
-    title: 'Confirm',
-    message: '¿Estas seguro de eliminar este registro? Este proceso es irreversible.',
-    cancel: true,
-    persistent: true
-  }).onOk(async () => {
-    try {
-      loading.value[2] = true
-      const { id, nombre } = e;
-      await ProfesionesService.save({ id, nombre });
-      getData();
-    } catch (e) {
-      console.log(e)
-    }
-    loading.value[2] = false
-  }).onOk(() => {
-    // console.log('>>>> second OK catcher')
-  }).onCancel(() => {
-    // console.log('>>>> Cancel')
-  }).onDismiss(() => {
-    // console.log('I am triggered on both OK and Cancel')
-  })
+  // $q.dialog({
+  //   title: 'Confirm',
+  //   message: '¿Estas seguro de eliminar este registro? Este proceso es irreversible.',
+  //   cancel: true,
+  //   persistent: true
+  // }).onOk(async () => {
+  try {
+    loading.value[0] = true
+    const { id, nombre } = e;
+    await ProfesionesService.save({ id, nombre });
+    dialog.value = false;
+    getData();
+  } catch (e) {
+    elProfesionesForm.value.setErrors(e.response.data.errors);
+  }
+  loading.value[0] = false
+  // }).onOk(() => {
+  //   // console.log('>>>> second OK catcher')
+  // }).onCancel(() => {
+  //   // console.log('>>>> Cancel')
+  // }).onDismiss(() => {
+  //   // console.log('I am triggered on both OK and Cancel')
+  // })
 };
 
 async function editar(id) {
@@ -175,10 +178,4 @@ async function eliminar(id) {
     // console.log('I am triggered on both OK and Cancel')
   })
 }
-
-//DataTable
-const tableRef = ref(null);
-// const navigationActive = ref(false);
-const pagination = ref({});
-const selected = ref([]);
 </script>

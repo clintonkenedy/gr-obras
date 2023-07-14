@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProfesionRequest;
 use App\Models\Profesion;
-use Illuminate\Http\Request;
 
 class ProfesionController extends Controller
 {
@@ -23,7 +23,7 @@ class ProfesionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProfesionRequest $request)
     {
         return response(Profesion::create($request->all()), 201);
     }
@@ -46,7 +46,7 @@ class ProfesionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProfesionRequest $request, $id)
     {
         Profesion::find($id)->update($request->all());
         return response([$request, $id]);
