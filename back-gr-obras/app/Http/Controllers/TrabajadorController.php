@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Trabajador;
 use Illuminate\Http\Request;
 
-class PersonalController extends Controller
+class TrabajadorController extends Controller
 {
     /**
      * Display a listing of the resource.

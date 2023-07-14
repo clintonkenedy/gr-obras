@@ -1,17 +1,17 @@
 <?php
 
-use App\Models\Administrativo;
-use App\Models\Archivo;
-use App\Models\Avance;
-use App\Models\Cargo;
-use App\Models\Cronograma;
-use App\Models\Obra;
-use App\Models\Persona;
-use App\Models\Presupuesto;
-use App\Models\Profesion;
-use App\Models\Trabajador;
-use App\Models\Ubigeo;
-use App\Models\Valorizacion;
+use App\Http\Controllers\AdministrativoController;
+use App\Http\Controllers\ArchivoController;
+use App\Http\Controllers\AvanceController;
+use App\Http\Controllers\CargoController;
+use App\Http\Controllers\CronogramaController;
+use App\Http\Controllers\ObraController;
+use App\Http\Controllers\PersonaController;
+use App\Http\Controllers\PresupuestoController;
+use App\Http\Controllers\ProfesionController;
+use App\Http\Controllers\TrabajadorController;
+use App\Http\Controllers\UbigeoController;
+use App\Http\Controllers\ValorizacionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,17 +34,17 @@ Route::get('saludo', function () {
     return response()->json(['message' => 'Hola mundo']);
 });
 
-Route::group(['prefix' => 'obras', 'middleware' => 'auth:api'], function () {
-    Route::apiResource('administrativos', Administrativo::class);
-    Route::apiResource('archivos', Archivo::class);
-    Route::apiResource('avance', Avance::class);
-    Route::apiResource('cargo', Cargo::class);
-    Route::apiResource('cronograma', Cronograma::class);
-    Route::apiResource('obra', Obra::class);
-    Route::apiResource('persona', Persona::class);
-    Route::apiResource('presupuesto', Presupuesto::class);
-    Route::apiResource('profesion', Profesion::class);
-    Route::apiResource('trabajador', Trabajador::class);
-    Route::apiResource('ubigeo', Ubigeo::class);
-    Route::apiResource('valorizacion', Valorizacion::class);
+Route::group(['prefix' => 'obras'], function () {
+    Route::apiResource('administrativos', AdministrativoController::class);
+    Route::apiResource('archivos', ArchivoController::class);
+    Route::apiResource('avance', AvanceController::class);
+    Route::apiResource('cargo', CargoController::class);
+    Route::apiResource('cronograma', CronogramaController::class);
+    Route::apiResource('obra', ObraController::class);
+    Route::apiResource('persona', PersonaController::class);
+    Route::apiResource('presupuesto', PresupuestoController::class);
+    Route::apiResource('profesion', ProfesionController::class);
+    Route::apiResource('trabajador', TrabajadorController::class);
+    Route::apiResource('ubigeo', UbigeoController::class);
+    Route::apiResource('valorizacion', ValorizacionController::class);
 });
