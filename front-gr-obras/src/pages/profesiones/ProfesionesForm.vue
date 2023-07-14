@@ -4,8 +4,9 @@
 </template>
   
 <script setup>
-import { ref, defineExpose } from 'vue';
+import { ref } from 'vue';
 
+const emits = defineEmits(['save']);
 //Estados reactivos
 const form = ref({
     id: null,
@@ -19,17 +20,22 @@ function setValue(row) {
 }
 
 function save() {
-    try {
+    emits('save', form.value);
+    // try {
 
-    } catch (error) {
-        errors.value = error;
-    }
+    // } catch (error) {
+    //     errors.value = error;
+    // }
 }
 
+function reset() {
+    console.log("cesar");
+}
 //Expose
 defineExpose({
     setValue,
-    save
+    save,
+    reset
 });
 </script>
   
