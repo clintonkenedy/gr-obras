@@ -16,11 +16,15 @@ export const useUserStore = defineStore("user", {
   actions: {
     async login(email, password) {
       try {
-        const res = await api.post("api/login", {
-          email: email,
-          password: password,
+        const res = await api.post('oauth/token', {
+          "grant_type": "password",
+          "client_id": "1",
+          "client_secret": import.meta.env.VITE_APP_SECRET,
+          "username": email,
+          "password": password,
+          "scope": "",
         });
-        let tokenString = "Bearer " + res.data.token.access_token;
+        let tokenString = "Bearer " + res.data.access_token;
         Cookies.set("token", tokenString);
         return res;
       } catch (e) {

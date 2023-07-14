@@ -47,7 +47,7 @@ const login = async () => {
   try {
     const login = await userStore.login(formLogin.value.email, formLogin.value.password)
     console.log(login.data)
-    userStore.setUser(login.data.user)
+    // userStore.setUser(login.data.user)
     emits("logued")
     console.log("login...")
     alertText.value = "Redireccionando ..."
