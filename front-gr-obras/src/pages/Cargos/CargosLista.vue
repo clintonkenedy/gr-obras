@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
     <q-table
-      :rows-per-page-options="[7, 10]"
+      :rows-per-page-options="[7, 10, 25, 50, 0]"
       flat
       bordered
       ref="tableRef"
@@ -21,7 +21,7 @@
           :disable="loading"
           :label="$q.screen.lt.sm ? '' : 'Agregar'"
           icon-right="add"
-          @click="profesionesformRef.show = true"
+          @click="formtestRef.show = true"
         />
 
       </template>
@@ -88,14 +88,16 @@
       </template>
     </q-table>
   </div>
-  <ProfesionesForm ref="profesionesformRef" @save="save()"></ProfesionesForm>
+  <FormTest ref="formtestRef" @save="save()"></FormTest>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
 import ProfesionesService from "src/services/ProfesionesService";
-import ProfesionesForm from "./ProfesionesForm.vue";
+import CargosForm from "./CargosForm.vue";
 import { useQuasar } from "quasar";
+import FormTest from "./FormTest.vue";
+
 const $q = useQuasar();
 const columns = [
   {
@@ -115,7 +117,7 @@ const columns = [
 ];
 
 const tableRef = ref();
-const profesionesformRef = ref();
+const formtestRef = ref();
 const rows = ref([]);
 const filter = ref("");
 const loading = ref(false);
@@ -128,8 +130,10 @@ const pagination = ref({
 });
 
 async function onRequest(props) {
+  console.log(tableRef.value.columns);
   const { page, rowsPerPage, sortBy, descending } = props.pagination;
   const filter = props.filter;
+  console.log(props.pagination);
   loading.value = true;
 
   const fetchCount = rowsPerPage === 0 ? 0 : rowsPerPage;
@@ -137,6 +141,7 @@ async function onRequest(props) {
   const { data, total = 0 } = await ProfesionesService.getData({
     params: { rowsPerPage: fetchCount, page, search: filter, order_by },
   });
+  console.log(data);
   // clear out existing data and add new
   rows.value.splice(0, rows.value.length, ...data);
   // don't forget to update local pagination object
@@ -156,12 +161,14 @@ onMounted(() => {
 });
 
 async function save() {
-  profesionesformRef.value.loading = true;
+  console.log("padre");
+  console.log(formtestRef.value.form);
+  formtestRef.value.loading = true;
 
   try {
-    await ProfesionesService.save(profesionesformRef.value.form);
-    profesionesformRef.value.loading = false;
-    profesionesformRef.value.show = false;
+    await ProfesionesService.save(formtestRef.value.form);
+    formtestRef.value.loading = false;
+    formtestRef.value.show = false;
     tableRef.value.requestServerInteraction();
     $q.notify({
           type: 'positive',
@@ -172,15 +179,15 @@ async function save() {
         })
   } catch (e) {
     console.log(e.response.data.errors);
-    profesionesformRef.value.setErrors(e.response.data.errors);
-    profesionesformRef.value.loading = false;
+    formtestRef.value.setErrors(e.response.data.errors);
+    formtestRef.value.loading = false;
   }
 }
 
 async function editar(id) {
-  profesionesformRef.value.show = true;
+  formtestRef.value.show = true;
   const row = await ProfesionesService.get(id);
-  profesionesformRef.value.setValue(row);
+  formtestRef.value.setValue(row);
 }
 
 async function eliminar(id) {

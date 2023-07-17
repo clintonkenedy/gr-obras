@@ -1,4 +1,8 @@
+import { boot } from 'quasar/wrappers'
 import { Cookies } from 'quasar'
+export default boot(({ router, store }) => {
+  router.beforeEach(authGuard)
+})
 
 const authGuard = (to) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
@@ -8,4 +12,4 @@ const authGuard = (to) => {
   }
 }
 
-export default authGuard;
+

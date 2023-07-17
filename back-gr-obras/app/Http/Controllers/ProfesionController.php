@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfesionRequest;
 use App\Models\Profesion;
+use Illuminate\Http\Request;
 
 class ProfesionController extends Controller
 {
@@ -12,9 +13,26 @@ class ProfesionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Profesion::paginate(300);
+        // if($request->input('rowsPerPage')==0){
+        //     return response()->json([
+        //         'data'=>Profesion::all()
+        //     ]
+        //     );
+
+        // }else{
+        //     return Profesion::paginate($request->input('rowsPerPage'));
+
+        // }
+        return $this->generateViewSetList(
+            $request,
+            Profesion::query(),
+            [],
+            ['id','nombre'],
+            ['id','nombre']
+          );
+        // return $request->filled('all');
     }
 
     /**

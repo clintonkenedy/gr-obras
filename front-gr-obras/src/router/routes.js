@@ -16,7 +16,8 @@ const routes = [
         name: "Roles",
         component: () => import("src/pages/Admin/roles/RolesIndex.vue"),
       },
-      { path: '/profesiones', name: 'Profesiones', component: () => import('pages/profesiones/ProfesionesLista.vue') }
+      { path: '/profesiones', name: 'Profesiones', component: () => import('pages/profesiones/ProfesionesLista.vue') },
+      { path: '/cargos', name: 'Cargos', component: () => import('pages/Cargos/CargosLista.vue') }
     ]
   },
   {
