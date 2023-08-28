@@ -26,7 +26,17 @@ class PersonaController extends Controller
      */
     public function store(PersonaStoreRequest $request)
     {
-        return response(Persona::create($request->all()), 201);
+        $persona = Persona::create($request->all());
+        $profesiones = $request->input('profesiones');
+        $persona_profesion = [];
+        for ($i = 0; $i < count($profesiones); $i++) {
+            $persona_profesion[] = [
+                'persona_id' => $persona->id,
+                'profesion_id' => $profesiones[$i]['id'],
+            ];
+        }
+        $persona->profesiones()->sync($persona_profesion);
+        return response($persona, 201);
     }
 
     /**
@@ -37,7 +47,9 @@ class PersonaController extends Controller
      */
     public function show($id)
     {
-        return response(Persona::find($id));
+        $persona = Persona::find($id);
+        $persona->profesiones = $persona->profesiones;
+        return response($persona);
     }
 
     /**
@@ -49,7 +61,18 @@ class PersonaController extends Controller
      */
     public function update(PersonaUpdateRequest $request, $id)
     {
-        return response(Persona::find($id)->update($request->all()));
+        $persona = Persona::find($id);
+        $persona->update($request->all());
+        $profesiones = $request->input('profesiones');
+        $persona_profesion = [];
+        for ($i = 0; $i < count($profesiones); $i++) {
+            $persona_profesion[] = [
+                'persona_id' => $persona->id,
+                'profesion_id' => $profesiones[$i]['id'],
+            ];
+        }
+        $persona->profesiones()->sync($persona_profesion);
+        return response($persona);
     }
 
     /**

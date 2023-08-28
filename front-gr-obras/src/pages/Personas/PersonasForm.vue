@@ -47,9 +47,48 @@
                     </div>
                 </div>
                 <div class="row justify-between">
-                    <SelectUbigeo ref="ubigeoSelectRef" :ubigeo_cod="form.ubigeo_cod" @selectedItem="updateUbigeo($event)"></SelectUbigeo>
+                    <SelectUbigeo ref="ubigeoSelectRef" :ubigeo_cod="form.ubigeo_cod" @selectedItem="updateUbigeo($event)">
+                    </SelectUbigeo>
                 </div>
 
+                <div class="q-px-xs">
+                    <q-separator class="q-my-md" />
+                </div>
+
+                <div class="row justify-between items-center q-mb-md">
+                    <div class="col-8 col-sm-8 q-px-xs">
+                        <SelectProfesion ref="profesionSelectRef" @selectedItem="updateProfesion($event)" />
+                    </div>
+                    <div class="col-4 col-sm-4 q-px-xs">
+                        <q-btn color="primary" label="Agregar" :loading="btnLoadings[0]" @click="addProfesion()"
+                            class="q-mr-xs" />
+                        <q-btn :loading="btnLoadings[1]" label="Limpiar" @click="cleanProfesion()" />
+                    </div>
+                </div>
+
+                <div class="q-px-xs">
+                    <q-markup-table dense separator="cell" flat bordered>
+                        <thead>
+                            <tr>
+                                <th class="text-center" colspan="3">Profesiones</th>
+                            </tr>
+                            <tr>
+                                <th class="text-center">Id</th>
+                                <th class="text-center">Nombre</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(p, i) in form.profesiones" :key="p">
+                                <td>{{ p.id }}</td>
+                                <td>{{ p.nombre }}</td>
+                                <td class="text-center">
+                                    <q-btn size="sm" outline color="red" round @click="removeProfesion(i)" icon="delete" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </q-markup-table>
+                </div>
             </q-card-section>
 
             <q-separator />
@@ -66,6 +105,7 @@
 import { ref, onMounted } from "vue";
 import SelectTipoDoc from "src/components/SelectTipoDoc.vue";
 import SelectUbigeo from "src/components/SelectUbigeo.vue";
+import SelectProfesion from "src/components/SelectProfesion.vue";
 
 const emits = defineEmits(["save"]);
 
@@ -83,12 +123,16 @@ const form = ref({
     celular: null,
     administrativo_id: null,
     trabajador_id: null,
-    ubigeo_cod: null
+    ubigeo_cod: null,
+    profesiones: []
 });
 const errors = ref({});
 const show = ref(false);
 const loading = ref(false);
+const btnLoadings = ref([false, false]);
 const ubigeoSelectRef = ref(null);
+const profesionSelectRef = ref(null);
+const profesion = ref({});
 
 //onMounted
 onMounted(() => {
@@ -103,6 +147,21 @@ function setValue(values) {
 
 function save() {
     emits("save");
+}
+
+function addProfesion() {
+    if (form.value.profesiones) {
+        form.value.profesiones.push(profesion.value);
+    } else {
+        form.value.profesiones = [];
+        form.value.profesiones.push(profesion.value);
+    }
+}
+
+function removeProfesion(i) {
+    if (form.value.profesiones.length != 0) {
+        form.value.profesiones.splice(i, 1)
+    }
 }
 
 function reset() {
@@ -124,6 +183,17 @@ function setErrors(row) {
 
 function updateUbigeo(event) {
     form.value.ubigeo_cod = event;
+}
+
+function updateProfesion(event) {
+    profesion.value = event;
+};
+
+function cleanProfesion() {
+    btnLoadings.value[1] = true;
+    profesion.value = null;
+    profesionSelectRef.value.reset();
+    btnLoadings.value[1] = false;
 }
 
 defineExpose({
