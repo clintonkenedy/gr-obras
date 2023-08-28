@@ -35,12 +35,13 @@ Route::get('saludo', function () {
     return response()->json(['message' => 'Hola mundo']);
 });
 
-Route::group(['prefix' => 'obras', 'middleware' => 'auth:api'], function () {
-    //Ubigeo
-    Route::get('departamentos', [UbigeoController::class, 'getDepartamentos']);
-    Route::get('provincias', [UbigeoController::class, 'getProvincias']);
-    Route::get('distritos', [UbigeoController::class, 'getDistritos']);
+//Ubigeo
+Route::get('ubigeo', [UbigeoController::class, 'getUbigeo']);
+Route::get('departamentos', [UbigeoController::class, 'getDepartamentos']);
+Route::get('provincias', [UbigeoController::class, 'getProvincias']);
+Route::get('distritos', [UbigeoController::class, 'getDistritos']);
 
+Route::group(['prefix' => 'obras', 'middleware' => 'auth:api'], function () {
     Route::apiResource('roles', RoleController::class);
     Route::apiResource('administrativos', AdministrativoController::class);
     Route::apiResource('archivos', ArchivoController::class);

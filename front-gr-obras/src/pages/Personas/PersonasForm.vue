@@ -46,6 +46,10 @@
                             :error-message="errors.celular" :error="errors.celular != null" />
                     </div>
                 </div>
+                <div class="row justify-between">
+                    <SelectUbigeo ref="ubigeoSelectRef" :ubigeo_cod="form.ubigeo_cod" @selectedItem="updateUbigeo($event)"></SelectUbigeo>
+                </div>
+
             </q-card-section>
 
             <q-separator />
@@ -61,6 +65,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import SelectTipoDoc from "src/components/SelectTipoDoc.vue";
+import SelectUbigeo from "src/components/SelectUbigeo.vue";
 
 const emits = defineEmits(["save"]);
 
@@ -78,11 +83,12 @@ const form = ref({
     celular: null,
     administrativo_id: null,
     trabajador_id: null,
-    ubigeo_id: null
+    ubigeo_cod: null
 });
 const errors = ref({});
 const show = ref(false);
 const loading = ref(false);
+const ubigeoSelectRef = ref(null);
 
 //onMounted
 onMounted(() => {
@@ -92,6 +98,7 @@ onMounted(() => {
 //Métodos
 function setValue(values) {
     form.value = values;
+    ubigeoSelectRef.value.getUbigeo(form.value.ubigeo_cod);
 }
 
 function save() {
@@ -112,7 +119,11 @@ function setErrors(row) {
     errors.value.email = row.email ? row.email[0] : null;
     errors.value.direccion = row.direccion ? row.direccion[0] : null;
     errors.value.celular = row.celular ? row.celular[0] : null;
-    errors.value.ubigeo_id = row.ubigeo_id ? row.ubigeo_id[0] : null;
+    errors.value.ubigeo_cod = row.ubigeo_cod ? row.ubigeo_cod[0] : null;
+}
+
+function updateUbigeo(event) {
+    form.value.ubigeo_cod = event;
 }
 
 defineExpose({

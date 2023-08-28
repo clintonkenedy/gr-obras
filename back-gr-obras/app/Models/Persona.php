@@ -22,7 +22,7 @@ class Persona extends Model
     'celular',
     'administrativo_id',
     'trabajador_id',
-    'ubigeo_id',
+    'ubigeo_cod',
   ];
 
   public function profesiones()
