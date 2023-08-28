@@ -14,11 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('persona_profesion', function (Blueprint $table) {
-            // $table->id();
-            $table->unsignedBigInteger('persona_id')->nullable();
-            $table->unsignedBigInteger('profesion_id')->nullable();
-            $table->foreign('persona_id')->references('id')->on('personas')->nullOnDelete();
-            $table->foreign('profesion_id')->references('id')->on('profesiones')->nullOnDelete();
+            $table->unsignedBigInteger('trabajador_id')->nullable();
+            $table->unsignedBigInteger('cargo_id')->nullable();
+            $table->foreign('trabajador_id')->references('id')->on('trabajadores')->nullOnDelete();
+            $table->foreign('cargo_id')->references('id')->on('cargos')->nullOnDelete();
             $table->timestamps();
         });
     }

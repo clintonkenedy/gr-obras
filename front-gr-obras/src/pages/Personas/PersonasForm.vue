@@ -59,10 +59,10 @@
                     <div class="col-8 col-sm-8 q-px-xs">
                         <SelectProfesion ref="profesionSelectRef" @selectedItem="updateProfesion($event)" />
                     </div>
-                    <div class="col-4 col-sm-4 q-px-xs">
-                        <q-btn color="primary" label="Agregar" :loading="btnLoadings[0]" @click="addProfesion()"
+                    <div class="col-4 col-sm-4 q-px-xs row justify-center">
+                        <q-btn outline color="primary" label="Agregar" :loading="btnLoadings[0]" @click="addProfesion()"
                             class="q-mr-xs" />
-                        <q-btn :loading="btnLoadings[1]" label="Limpiar" @click="cleanProfesion()" />
+                        <q-btn outline :loading="btnLoadings[1]" label="Limpiar" @click="cleanProfesion()" />
                     </div>
                 </div>
 
@@ -150,11 +150,13 @@ function save() {
 }
 
 function addProfesion() {
-    if (form.value.profesiones) {
-        form.value.profesiones.push(profesion.value);
-    } else {
-        form.value.profesiones = [];
-        form.value.profesiones.push(profesion.value);
+    if (profesion.value.id) {
+        if (form.value.profesiones) {
+            form.value.profesiones.push(profesion.value);
+        } else {
+            form.value.profesiones = [];
+            form.value.profesiones.push(profesion.value);
+        }
     }
 }
 

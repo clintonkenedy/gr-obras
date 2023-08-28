@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('trabajadores', function (Blueprint $table) {
+        Schema::create('cargos', function (Blueprint $table) {
             $table->id();
-            $table->string('profesion', 191);
-            $table->string('condicion', 100);
-            $table->unsignedBigInteger('obra_id')->nullable();
-            $table->foreign('obra_id')->references('id')->on('obras')->nullOnDelete();
+            $table->string('nombre', 191);
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('trabajadores');
+        Schema::dropIfExists('cargos');
     }
 };

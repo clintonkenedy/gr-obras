@@ -48,11 +48,28 @@
             </q-item>
           </q-expansion-item>
 
-          <q-expansion-item icon="mdi-account-group" label="Personas">
+          <q-expansion-item icon="mdi-account-hard-hat" label="Trabajadores">
+            <q-item :to="{ name: 'Trabajadores' }" clickable v-ripple :active="link === 'Trabajadores'"
+              @click="link = 'Trabajadores'" :inset-level="0.5" active-class="bg-primary text-white">
+              <q-item-section avatar>
+                <q-icon name="mdi-account-hard-hat" />
+              </q-item-section>
+              <q-item-section>Trabajadores</q-item-section>
+            </q-item>
+            <q-item :to="{ name: 'Cargos' }" clickable v-ripple :active="link === 'Cargos'" @click="link = 'Cargos'"
+              :inset-level="0.5" active-class="bg-primary text-white">
+              <q-item-section avatar>
+                <q-icon name="mdi-tools" />
+              </q-item-section>
+              <q-item-section>Cargos</q-item-section>
+            </q-item>
+          </q-expansion-item>
+
+          <q-expansion-item icon="mdi-account" label="Personas">
             <q-item :to="{ name: 'Personas' }" clickable v-ripple :active="link === 'Personas'" @click="link = 'Personas'"
               :inset-level="0.5" active-class="bg-primary text-white">
               <q-item-section avatar>
-                <q-icon name="mdi-account-group" />
+                <q-icon name="mdi-account" />
               </q-item-section>
               <q-item-section>Personas</q-item-section>
             </q-item>
