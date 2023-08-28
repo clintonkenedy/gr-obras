@@ -11,7 +11,11 @@ class Profesion extends Model
 
     protected $table = 'profesiones';
     protected $fillable = [
-      'nombre',
-      'persona_id',
+      'nombre'
     ];
+
+    public function personas()
+    {
+      return $this->belongsToMany("App\Models\Persona", "persona_profesion");
+    }
 }

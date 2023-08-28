@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Persona\PersonaStoreRequest;
+use App\Http\Requests\Persona\PersonaUpdateRequest;
 use App\Models\Persona;
-use Illuminate\Http\Request;
 
 class PersonaController extends Controller
 {
@@ -23,7 +24,7 @@ class PersonaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PersonaStoreRequest $request)
     {
         return response(Persona::create($request->all()), 201);
     }
@@ -46,10 +47,9 @@ class PersonaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PersonaUpdateRequest $request, $id)
     {
-        Persona::find($id)->update($request->all());
-        return response([$request, $id]);
+        return response(Persona::find($id)->update($request->all()));
     }
 
     /**

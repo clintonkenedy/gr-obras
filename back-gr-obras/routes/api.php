@@ -36,6 +36,11 @@ Route::get('saludo', function () {
 });
 
 Route::group(['prefix' => 'obras', 'middleware' => 'auth:api'], function () {
+    //Ubigeo
+    Route::get('departamentos', [UbigeoController::class, 'getDepartamentos']);
+    Route::get('provincias', [UbigeoController::class, 'getProvincias']);
+    Route::get('distritos', [UbigeoController::class, 'getDistritos']);
+
     Route::apiResource('roles', RoleController::class);
     Route::apiResource('administrativos', AdministrativoController::class);
     Route::apiResource('archivos', ArchivoController::class);
@@ -47,6 +52,5 @@ Route::group(['prefix' => 'obras', 'middleware' => 'auth:api'], function () {
     Route::apiResource('presupuesto', PresupuestoController::class);
     Route::apiResource('profesion', ProfesionController::class);
     Route::apiResource('trabajador', TrabajadorController::class);
-    Route::apiResource('ubigeo', UbigeoController::class);
     Route::apiResource('valorizacion', ValorizacionController::class);
 });

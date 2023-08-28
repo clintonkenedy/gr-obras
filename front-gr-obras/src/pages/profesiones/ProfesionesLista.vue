@@ -1,59 +1,31 @@
 <template>
-  <div class="q-pa-md">
-    <q-table
-      :rows-per-page-options="[7, 10]"
-      flat
-      bordered
-      ref="tableRef"
-      color="primary"
-      :rows="rows"
-      :columns="columns"
-      row-key="id"
-      v-model:pagination="pagination"
-      :loading="loading"
-      :filter="filter"
-      binary-state-sort
-      @request="onRequest"
-    >
-      <template v-slot:top-left>
-        <q-btn
-          color="primary"
-          :disable="loading"
-          :label="$q.screen.lt.sm ? '' : 'Agregar'"
-          icon-right="add"
-          @click="profesionesformRef.show = true"
-        />
+  <div class="q-px-md q-py-md">
+    <div class="row justify-between">
+      <div>
+        <span class="text-h4">Profesiones</span>
+      </div>
+    </div>
+  </div>
 
+  <div class="q-px-md q-pb-md">
+    <q-table dense :rows-per-page-options="[5, 10, 15, 20, 50, 100]" flat bordered ref="tableRef" color="primary"
+      :rows="rows" :columns="columns" row-key="id" v-model:pagination="pagination" :loading="loading" :filter="filter"
+      binary-state-sort @request="onRequest">
+      <template v-slot:top-left>
+        <q-btn color="primary" :disable="loading" :label="$q.screen.lt.sm ? '' : 'Agregar'" icon="add"
+          @click="profesionesformRef.show = true" />
       </template>
-      <!-- <template v-slot:loading>
-        <q-inner-loading showing color="primary" />
-      </template> -->
       <template v-slot:top-right>
-        <q-input
-          outlined
-          borderless
-          dense
-          debounce="500"
-          v-model="filter"
-          placeholder="Search"
-        >
+        <q-input outlined borderless dense debounce="500" v-model="filter" placeholder="Buscar">
           <template v-slot:append>
             <q-icon name="search" />
           </template>
         </q-input>
       </template>
+
       <template v-slot:header="props">
         <q-tr :props="props">
-          <q-th
-            style="
-               {
-                width: 30%;
-              }
-            "
-            v-for="col in props.cols"
-            :key="col.name"
-            :props="props"
-          >
+          <q-th style="{ width: 33%; }" v-for="col in props.cols" :key="col.name" :props="props">
             {{ col.label }}
           </q-th>
           <q-th auto-width> Acciones </q-th>
@@ -66,28 +38,14 @@
             {{ col.value }}
           </q-td>
           <q-td auto-width>
-            <q-btn
-              size="sm"
-              outline
-              color="green"
-              round
-              @click="editar(props.row.id)"
-              icon="edit"
-              class="q-mr-xs"
-            />
-            <q-btn
-              size="sm"
-              outline
-              color="red"
-              round
-              @click="eliminar(props.row.id)"
-              icon="delete"
-            />
+            <q-btn size="sm" outline color="green" round @click="editar(props.row.id)" icon="edit" class="q-mr-xs" />
+            <q-btn size="sm" outline color="red" round @click="eliminar(props.row.id)" icon="delete" />
           </q-td>
         </q-tr>
       </template>
     </q-table>
   </div>
+
   <ProfesionesForm ref="profesionesformRef" @save="save()"></ProfesionesForm>
 </template>
 
@@ -96,7 +54,9 @@ import { ref, onMounted } from "vue";
 import ProfesionesService from "src/services/ProfesionesService";
 import ProfesionesForm from "./ProfesionesForm.vue";
 import { useQuasar } from "quasar";
+
 const $q = useQuasar();
+
 const columns = [
   {
     name: "id",
@@ -123,8 +83,8 @@ const pagination = ref({
   sortBy: "id",
   descending: false,
   page: 1,
-  rowsPerPage: 7,
-  rowsNumber: 10,
+  rowsPerPage: 15,
+  rowsNumber: 15,
 });
 
 async function onRequest(props) {
@@ -157,21 +117,19 @@ onMounted(() => {
 
 async function save() {
   profesionesformRef.value.loading = true;
-
   try {
     await ProfesionesService.save(profesionesformRef.value.form);
     profesionesformRef.value.loading = false;
     profesionesformRef.value.show = false;
     tableRef.value.requestServerInteraction();
     $q.notify({
-          type: 'positive',
-          message: 'Guardado con Exito.',
-          position: 'top-right',
-          progress: true,
-          timeout: 1000,
-        })
+      type: 'positive',
+      message: 'Guardado con Exito.',
+      position: 'top-right',
+      progress: true,
+      timeout: 1000,
+    })
   } catch (e) {
-    console.log(e.response.data.errors);
     profesionesformRef.value.setErrors(e.response.data.errors);
     profesionesformRef.value.loading = false;
   }
@@ -185,7 +143,7 @@ async function editar(id) {
 
 async function eliminar(id) {
   $q.dialog({
-    title: "Confirm",
+    title: "Eliminar",
     message:
       "¿Estas seguro de eliminar este registro? Este proceso es irreversible.",
     cancel: true,
@@ -194,12 +152,12 @@ async function eliminar(id) {
     await ProfesionesService.delete(id);
     tableRef.value.requestServerInteraction();
     $q.notify({
-          type: 'positive',
-          message: 'Eliminado con Exito.',
-          position: 'top-right',
-          progress: true,
-          timeout: 1000,
-        })
+      type: 'positive',
+      message: 'Eliminado con Exito.',
+      position: 'top-right',
+      progress: true,
+      timeout: 1000,
+    })
   });
 }
 </script>

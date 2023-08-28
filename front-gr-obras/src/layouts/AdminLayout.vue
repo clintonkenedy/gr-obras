@@ -38,12 +38,29 @@
 
               <q-item-section>Roles</q-item-section>
             </q-item>
-            <q-item :to="{ name: 'Profesiones' }" clickable v-ripple :active="link === 'Profesiones'" @click="link = 'Profesiones'"
-              :inset-level="0.5" active-class="bg-primary text-white">
+            <q-item :to="{ name: 'Profesiones' }" clickable v-ripple :active="link === 'Profesiones'"
+              @click="link = 'Profesiones'" :inset-level="0.5" active-class="bg-primary text-white">
               <q-item-section avatar>
                 <q-icon name="vpn_key" />
               </q-item-section>
 
+              <q-item-section>Profesiones</q-item-section>
+            </q-item>
+          </q-expansion-item>
+
+          <q-expansion-item icon="mdi-account-group" label="Personas">
+            <q-item :to="{ name: 'Personas' }" clickable v-ripple :active="link === 'Personas'" @click="link = 'Personas'"
+              :inset-level="0.5" active-class="bg-primary text-white">
+              <q-item-section avatar>
+                <q-icon name="mdi-account-group" />
+              </q-item-section>
+              <q-item-section>Personas</q-item-section>
+            </q-item>
+            <q-item :to="{ name: 'Profesiones' }" clickable v-ripple :active="link === 'Profesiones'"
+              @click="link = 'Profesiones'" :inset-level="0.5" active-class="bg-primary text-white">
+              <q-item-section avatar>
+                <q-icon name="mdi-school" />
+              </q-item-section>
               <q-item-section>Profesiones</q-item-section>
             </q-item>
           </q-expansion-item>

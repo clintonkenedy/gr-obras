@@ -16,9 +16,6 @@ return new class extends Migration
         Schema::create('profesiones', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 191);
-
-            $table->unsignedBigInteger('persona_id')->nullable();
-            $table->foreign('persona_id')->references('id')->on('personas')->nullOnDelete();
             $table->timestamps();
         });
     }

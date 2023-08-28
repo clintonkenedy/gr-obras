@@ -3,64 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ubigeo;
-use Illuminate\Http\Request;
 
 class UbigeoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function getDepartamentos()
     {
-        return Ubigeo::paginate($this->getPageSize());
+        return response(
+            Ubigeo::select('ndep', 'nombre')->where('tipo', 'de')->get(),
+            200,
+            ['cache-control' => 'private, max-age=604800'] // Guardar una semana
+        );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function getProvincias()
     {
-        return response(Ubigeo::create($request->all()), 201);
+        return response(
+            Ubigeo::select('ndep', 'nprov', 'nombre')->where('tipo', 'PR')->get(),
+            200,
+            ['cache-control' => 'private, max-age=604800'] // Guardar una semana
+        );
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function getDistritos()
     {
-        return response(Ubigeo::find($id));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        Ubigeo::find($id)->update($request->all());
-        return response([$request, $id]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        Ubigeo::destroy($id);
-        return response($id);
+        return response(
+            Ubigeo::select('ndep', 'nprov', 'ndist', 'nombre')->where('tipo', 'DI')->get(),
+            200,
+            ['cache-control' => 'private, max-age=604800'] // Guardar una semana
+        );
     }
 }
