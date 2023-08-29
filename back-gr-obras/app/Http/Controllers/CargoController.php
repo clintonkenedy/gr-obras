@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CargoRequest;
 use App\Models\Cargo;
+use Illuminate\Http\Request;
 
 class CargoController extends Controller
 {
@@ -12,9 +13,15 @@ class CargoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Cargo::paginate($this->getPageSize());
+        return $this->generateViewSetList(
+            $request,
+            Cargo::query(),
+            [],
+            ['id', 'nombre'],
+            ['id', 'nombre']
+        );
     }
 
     /**

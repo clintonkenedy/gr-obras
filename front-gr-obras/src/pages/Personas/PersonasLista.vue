@@ -106,21 +106,18 @@ const columns = [
         label: "Email",
         aling: "center",
         field: (row) => row.email,
-        sortable: true,
     },
     {
         name: "direccion",
         label: "Dirección",
         aling: "center",
         field: (row) => row.direccion,
-        sortable: true,
     },
     {
         name: "celular",
         label: "Celular",
         aling: "center",
         field: (row) => row.celular,
-        sortable: true,
     },
 ];
 

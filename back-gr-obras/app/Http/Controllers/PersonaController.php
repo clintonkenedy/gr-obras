@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Persona\PersonaStoreRequest;
 use App\Http\Requests\Persona\PersonaUpdateRequest;
 use App\Models\Persona;
+use Illuminate\Http\Request;
 
 class PersonaController extends Controller
 {
@@ -13,9 +14,15 @@ class PersonaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Persona::paginate($this->getPageSize());
+        return $this->generateViewSetList(
+            $request,
+            Persona::query(),
+            [],
+            ['id', 'tipo_doc', 'num_doc', 'nombres', 'a_paterno', 'a_materno', 'nombre_completo'],
+            ['id', 'tipo_doc', 'num_doc', 'nombres', 'a_paterno', 'a_materno']
+        );
     }
 
     /**
