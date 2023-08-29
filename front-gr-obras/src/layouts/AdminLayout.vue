@@ -22,24 +22,53 @@
       <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
         <q-list padding class="text-grey-8">
           <q-expansion-item icon="mdi-account-lock" label="Seguridad y Acceso">
-            <q-item :to="{ name: 'Permisos' }" clickable v-ripple :active="link === 'inbox'" @click="link = 'inbox'"
-              :inset-level="0.5" active-class="bg-primary text-white">
+            <q-item
+              :to="{ name: 'Permisos' }"
+              clickable
+              v-ripple
+              :active="link === 'inbox'"
+              @click="link = 'inbox'"
+              :inset-level="0.5"
+              active-class="bg-secondary text-primary"
+            >
               <q-item-section avatar>
                 <q-icon name="vpn_key" />
               </q-item-section>
 
               <q-item-section>Permisos</q-item-section>
             </q-item>
-            <q-item :to="{ name: 'Roles' }" clickable v-ripple :active="link === 'roles'" @click="link = 'roles'"
-              :inset-level="0.5" active-class="bg-primary text-white">
+            <q-item
+              :to="{ name: 'Roles' }"
+              clickable
+              v-ripple
+              :active="link === 'roles'"
+              @click="link = 'roles'"
+              :inset-level="0.5"
+              active-class="bg-secondary text-primary"
+            >
               <q-item-section avatar>
                 <q-icon name="vpn_key" />
               </q-item-section>
 
               <q-item-section>Roles</q-item-section>
             </q-item>
-            <q-item :to="{ name: 'Profesiones' }" clickable v-ripple :active="link === 'Profesiones'"
-              @click="link = 'Profesiones'" :inset-level="0.5" active-class="bg-primary text-white">
+            <q-item
+              :to="{ name: 'Usuarios' }"
+              clickable
+              v-ripple
+              :active="link === 'usuarios'"
+              @click="link = 'usuarios'"
+              :inset-level="0.5"
+              active-class="bg-secondary text-primary"
+            >
+              <q-item-section avatar>
+                <q-icon name="vpn_key" />
+              </q-item-section>
+
+              <q-item-section>Usuarios</q-item-section>
+            </q-item>
+            <q-item :to="{ name: 'Profesiones' }" clickable v-ripple :active="link === 'Profesiones'" @click="link = 'Profesiones'"
+              :inset-level="0.5" active-class="bg-primary text-white">
               <q-item-section avatar>
                 <q-icon name="vpn_key" />
               </q-item-section>

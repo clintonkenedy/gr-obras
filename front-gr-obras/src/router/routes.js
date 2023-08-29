@@ -5,16 +5,24 @@ const routes = [
     meta: { requiresAuth: true },
     children: [
       { path: '', name: 'Dash', component: () => import('pages/Admin/HomeAdmin.vue') },
+
+
       {
         path: "permisos",
         name: "Permisos",
-        component: () => import("src/pages/Admin/persmisos/PermisosIndex.vue"),
+        component: () => import("src/pages/Admin/persmisos/PermisosList.vue"),
       },
       {
         path: "roles",
         name: "Roles",
-        component: () => import("src/pages/Admin/roles/RolesIndex.vue"),
+        component: () => import("src/pages/Admin/roles/RolesList.vue"),
       },
+      {
+        path: "usuarios",
+        name: "Usuarios",
+        component: () => import("src/pages/Admin/usuarios/UsuariosList.vue"),
+      },
+
       { path: '/profesiones', name: 'Profesiones', component: () => import('pages/profesiones/ProfesionesLista.vue') },
       { path: '/obras', name: 'Obras', component: () => import('pages/Obras/ObrasLista.vue') },
       { path: '/cronogramas', name: 'Cronogramas', component: () => import('pages/Obras/Cronogramas/CronogramasLista.vue') },

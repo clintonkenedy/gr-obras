@@ -13,6 +13,9 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TrabajadorController;
 use App\Http\Controllers\UbigeoController;
 use App\Http\Controllers\ValorizacionController;
+use App\Http\Controllers\Api\V1\PermissionController as PermissionsControllerV1;
+use App\Http\Controllers\Api\V1\RoleController as RoleControllerV1;
+use App\Http\Controllers\Api\V1\UserController as UserControllerV1;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +37,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('saludo', function () {
     return response()->json(['message' => 'Hola mundo']);
 });
+
+
+Route::apiResources([
+    'v1/permisos' => PermissionsControllerV1::class,
+]);
+Route::apiResources([
+    'v1/roles' => RoleControllerV1::class,
+]);
+Route::apiResources([
+    'v1/usuarios' => UserControllerV1::class,
+]);
+
 
 //Ubigeo
 Route::get('ubigeo', [UbigeoController::class, 'getUbigeo']);
