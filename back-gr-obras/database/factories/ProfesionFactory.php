@@ -18,7 +18,6 @@ class ProfesionFactory extends Factory
     {
         return [
             'nombre' => $this->faker->name,
-            // 'persona_id' => $this->faker->randomElement([1, 2, 3]),
         ];
     }
 }

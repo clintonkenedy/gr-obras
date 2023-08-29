@@ -24,8 +24,7 @@ class ProfesionRequest extends FormRequest
     public function rules()
     {
         return [
-            'nombre' => 'required',
-            // 'persona_id' => 'required'
+            'nombre' => 'required|string|max:191',
         ];
     }
 }

@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ubigeo extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $table = 'ubigeos';
-    protected $fillable = [
-      'codigo',
-      'tipo',
-      'cod_dist',
-      'cod_prov',
-      'cod_dep',
-      'nombre',
-    ];
+  protected $table = 'ubigeos';
+  protected $fillable = [
+    'codigo',
+    'tipo',
+    'cod_dep',
+    'cod_prov',
+    'cod_dist',
+    'nombre',
+  ];
 }

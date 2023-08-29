@@ -3,64 +3,60 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ubigeo;
-use Illuminate\Http\Request;
 
 class UbigeoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function getUbigeo()
     {
-        return Ubigeo::paginate($this->getPageSize());
+        if (request()->has('ubigeo_cod')) {
+            $departamento = Ubigeo::select('cod_dep', 'cod_prov', 'cod_dist', 'nombre')
+                ->where('cod_dep', substr(request('ubigeo_cod'), 0, 2))
+                ->where('cod_prov', '00')
+                ->where('cod_dist', '00')
+                ->first();
+            $provincia = Ubigeo::select('cod_dep', 'cod_prov', 'cod_dist', 'nombre')
+                ->where('cod_dep', substr(request('ubigeo_cod'), 0, 2))
+                ->where('cod_prov', substr(request('ubigeo_cod'), 2, -2))
+                ->where('cod_dist', '00')
+                ->first();
+            $distrito = Ubigeo::select('cod_dep', 'cod_prov', 'cod_dist', 'nombre')
+                ->where('cod_dep', substr(request('ubigeo_cod'), 0, 2))
+                ->where('cod_prov', substr(request('ubigeo_cod'), 2, -2))
+                ->where('cod_dist', substr(request('ubigeo_cod'), 4, 6))
+                ->first();
+
+            return response([
+                'departamento' => $departamento,
+                'provincia' => $provincia,
+                'distrito' => $distrito,
+            ]);
+        };
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function getDepartamentos()
     {
-        return response(Ubigeo::create($request->all()), 201);
+        return response(
+            Ubigeo::select('cod_dep', 'cod_prov', 'cod_dist', 'nombre')->where('tipo', 'departamento')->get(),
+            200,
+            ['cache-control' => 'private, max-age=604800'] // Guardar una semana
+        );
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function getProvincias()
     {
-        return response(Ubigeo::find($id));
+        return response(
+            Ubigeo::select('cod_dep', 'cod_prov', 'cod_dist', 'nombre')->where('tipo', 'provincia')->get(),
+            200,
+            ['cache-control' => 'private, max-age=604800'] // Guardar una semana
+        );
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function getDistritos()
     {
-        Ubigeo::find($id)->update($request->all());
-        return response([$request, $id]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        Ubigeo::destroy($id);
-        return response($id);
+        return response(
+            Ubigeo::select('cod_dep', 'cod_prov', 'cod_dist', 'nombre')->where('tipo', 'distrito')->get(),
+            200,
+            ['cache-control' => 'private, max-age=604800'] // Guardar una semana
+        );
     }
 }

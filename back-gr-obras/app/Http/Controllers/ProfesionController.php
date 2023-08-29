@@ -15,16 +15,6 @@ class ProfesionController extends Controller
      */
     public function index(Request $request)
     {
-        // if($request->input('rowsPerPage')==0){
-        //     return response()->json([
-        //         'data'=>Profesion::all()
-        //     ]
-        //     );
-
-        // }else{
-        //     return Profesion::paginate($request->input('rowsPerPage'));
-
-        // }
         return $this->generateViewSetList(
             $request,
             Profesion::query(),
@@ -32,7 +22,6 @@ class ProfesionController extends Controller
             ['id','nombre'],
             ['id','nombre']
           );
-        // return $request->filled('all');
     }
 
     /**

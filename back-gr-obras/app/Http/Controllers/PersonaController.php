@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Persona\PersonaStoreRequest;
+use App\Http\Requests\Persona\PersonaUpdateRequest;
 use App\Models\Persona;
 use Illuminate\Http\Request;
 
@@ -12,9 +14,15 @@ class PersonaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Persona::paginate($this->getPageSize());
+        return $this->generateViewSetList(
+            $request,
+            Persona::query(),
+            [],
+            ['id', 'tipo_doc', 'num_doc', 'nombres', 'a_paterno', 'a_materno', 'nombre_completo'],
+            ['id', 'tipo_doc', 'num_doc', 'nombres', 'a_paterno', 'a_materno']
+        );
     }
 
     /**
@@ -23,9 +31,19 @@ class PersonaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PersonaStoreRequest $request)
     {
-        return response(Persona::create($request->all()), 201);
+        $persona = Persona::create($request->all());
+        $profesiones = $request->input('profesiones');
+        $persona_profesion = [];
+        for ($i = 0; $i < count($profesiones); $i++) {
+            $persona_profesion[] = [
+                'persona_id' => $persona->id,
+                'profesion_id' => $profesiones[$i]['id'],
+            ];
+        }
+        $persona->profesiones()->sync($persona_profesion);
+        return response($persona, 201);
     }
 
     /**
@@ -36,7 +54,9 @@ class PersonaController extends Controller
      */
     public function show($id)
     {
-        return response(Persona::find($id));
+        $persona = Persona::find($id);
+        $persona->profesiones = $persona->profesiones;
+        return response($persona);
     }
 
     /**
@@ -46,10 +66,20 @@ class PersonaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PersonaUpdateRequest $request, $id)
     {
-        Persona::find($id)->update($request->all());
-        return response([$request, $id]);
+        $persona = Persona::find($id);
+        $persona->update($request->all());
+        $profesiones = $request->input('profesiones');
+        $persona_profesion = [];
+        for ($i = 0; $i < count($profesiones); $i++) {
+            $persona_profesion[] = [
+                'persona_id' => $persona->id,
+                'profesion_id' => $profesiones[$i]['id'],
+            ];
+        }
+        $persona->profesiones()->sync($persona_profesion);
+        return response($persona);
     }
 
     /**
