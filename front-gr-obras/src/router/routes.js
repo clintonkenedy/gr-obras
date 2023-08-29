@@ -15,9 +15,10 @@ const routes = [
         name: "Roles",
         component: () => import("src/pages/Admin/roles/RolesIndex.vue"),
       },
+      { path: '/trabajadores', name: 'Trabajadores', component: () => import('pages/Trabajadores/TrabajadoresLista.vue') },
+      { path: '/cargos', name: 'Cargos', component: () => import('pages/Cargos/CargosLista.vue') },
       { path: '/personas', name: 'Personas', component: () => import('pages/Personas/PersonasLista.vue') },
       { path: '/profesiones', name: 'Profesiones', component: () => import('pages/Profesiones/ProfesionesLista.vue') },
-      { path: '/cargos', name: 'Cargos', component: () => import('pages/Cargos/CargosLista.vue') }
     ]
   },
   {
