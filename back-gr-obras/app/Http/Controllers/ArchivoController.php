@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Archivo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ArchivoController extends Controller
 {
@@ -25,7 +27,18 @@ class ArchivoController extends Controller
      */
     public function store(Request $request)
     {
-        return response(Archivo::create($request->all()), 201);
+        $nombre = $request->file('file');
+        // Nombre
+        $nombre1 = 'cronograma' . Str::random(5) . '.' . $nombre->getClientOriginalExtension();
+        // Guardando archivo
+        $nombre->storeAs('public', $nombre1);
+        
+        $archivo = Archivo::create([
+            "tipo" => $nombre->getClientOriginalExtension(),
+            "nombre" => $nombre1,
+            "url" => url('storage/' . $nombre1)
+        ]);
+        return response($archivo, 201);
     }
 
     /**
@@ -48,8 +61,24 @@ class ArchivoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Archivo::find($id)->update($request->all());
-        return response([$request, $id]);
+        //
+        $archivo = Archivo::find($id);
+        if (Storage::disk('local')->exists('public/' . $archivo->nombre)) {
+            Storage::disk('local')->delete('public/' . $archivo->nombre);
+        }
+        $nombre = $request->file('file');
+        // Nombre
+        $nombre1 = 'cronograma' . Str::random(5) . '.' . $nombre->getClientOriginalExtension();
+        // Guardando archivo
+        $nombre->storeAs('public', $nombre1);
+        
+        $archivo = Archivo::find($id)->update([
+            "tipo" => $nombre->getClientOriginalExtension(),
+            "nombre" => $nombre1,
+            "url" => url('storage/' . $nombre1)
+        ]);
+
+        return response([$archivo, $id]);
     }
 
     /**
@@ -60,7 +89,11 @@ class ArchivoController extends Controller
      */
     public function destroy($id)
     {
-        Archivo::destroy($id);
+        $archivo = Archivo::find($id);
+        Archivo::destroy($archivo->id);
+        if (Storage::disk('local')->exists('public/' . $archivo->nombre)) {
+            Storage::disk('local')->delete('public/' . $archivo->nombre);
+        }
         return response($id);
     }
 }

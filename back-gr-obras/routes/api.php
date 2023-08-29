@@ -38,7 +38,7 @@ Route::get('saludo', function () {
 Route::group(['prefix' => 'obras', 'middleware' => 'auth:api'], function () {
     Route::apiResource('roles', RoleController::class);
     Route::apiResource('administrativos', AdministrativoController::class);
-    Route::apiResource('archivos', ArchivoController::class);
+    Route::apiResource('archivo', ArchivoController::class);
     Route::apiResource('avance', AvanceController::class);
     Route::apiResource('cargo', CargoController::class);
     Route::apiResource('cronograma', CronogramaController::class);
