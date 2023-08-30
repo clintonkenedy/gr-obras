@@ -9,9 +9,24 @@ import { Cookies } from 'quasar'
 // "export default () => {}" function below (which runs individually
 // for each client)
 const sessionToken = Cookies.get('token');
-const api = axios.create({ baseURL: import.meta.env.VITE_APP_API_URL , headers: {
-  Authorization: sessionToken
-}})
+const api = axios.create({
+  baseURL: import.meta.env.VITE_APP_API_URL,
+});
+// const api = axios.create({ baseURL: import.meta.env.VITE_APP_API_URL , headers: {
+//   Authorization: sessionToken
+// }})
+api.interceptors.request.use(
+  (config) => {
+    const token = Cookies.get("token"); // Reemplaza con el token de autenticación que desees enviar
+    if (token) {
+      config.headers["Authorization"] = token;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
