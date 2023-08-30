@@ -77,6 +77,78 @@
             </q-item>
           </q-expansion-item>
 
+          <q-expansion-item icon="mdi-account-hard-hat" label="Trabajadores">
+            <q-item :to="{ name: 'Trabajadores' }" clickable v-ripple :active="link === 'Trabajadores'"
+              @click="link = 'Trabajadores'" :inset-level="0.5" active-class="bg-primary text-white">
+              <q-item-section avatar>
+                <q-icon name="mdi-account-hard-hat" />
+              </q-item-section>
+              <q-item-section>Trabajadores</q-item-section>
+            </q-item>
+            <q-item :to="{ name: 'Cargos' }" clickable v-ripple :active="link === 'Cargos'" @click="link = 'Cargos'"
+              :inset-level="0.5" active-class="bg-primary text-white">
+              <q-item-section avatar>
+                <q-icon name="mdi-tools" />
+              </q-item-section>
+              <q-item-section>Cargos</q-item-section>
+            </q-item>
+          </q-expansion-item>
+
+          <q-expansion-item icon="mdi-account" label="Personas">
+            <q-item :to="{ name: 'Personas' }" clickable v-ripple :active="link === 'Personas'" @click="link = 'Personas'"
+              :inset-level="0.5" active-class="bg-primary text-white">
+              <q-item-section avatar>
+                <q-icon name="mdi-account" />
+              </q-item-section>
+              <q-item-section>Personas</q-item-section>
+            </q-item>
+            <q-item :to="{ name: 'Profesiones' }" clickable v-ripple :active="link === 'Profesiones'"
+              @click="link = 'Profesiones'" :inset-level="0.5" active-class="bg-primary text-white">
+              <q-item-section avatar>
+                <q-icon name="mdi-school" />
+              </q-item-section>
+              <q-item-section>Profesiones</q-item-section>
+            </q-item>
+          </q-expansion-item>
+
+          <q-expansion-item icon="work" label="Obras">
+            <q-item :to="{ name: 'Obras' }" clickable v-ripple :active="link === 'obras'" @click="link = 'obras'"
+              :inset-level="0.5" active-class="bg-primary text-white">
+              <q-item-section avatar>
+                <q-icon name="work" />
+              </q-item-section>
+
+              <q-item-section>Obras</q-item-section>
+            </q-item>
+
+            <q-item :to="{ name: 'Cronogramas' }" clickable v-ripple :active="link === 'cronogramas'" @click="link = 'cronogramas'"
+              :inset-level="0.5" active-class="bg-primary text-white">
+              <q-item-section avatar>
+                <q-icon name="edit_calendar" />
+              </q-item-section>
+
+              <q-item-section>Cronogramas</q-item-section>
+            </q-item>
+
+            <q-item :to="{ name: 'Avances' }" clickable v-ripple :active="link === 'avances'" @click="link = 'avances'"
+              :inset-level="0.5" active-class="bg-primary text-white">
+              <q-item-section avatar>
+                <q-icon name="assessment" />
+              </q-item-section>
+
+              <q-item-section>Avances</q-item-section>
+            </q-item>
+
+          </q-expansion-item>
+
+          <q-item clickable v-ripple :to="{ name: 'Archivos' }" :active="link === 'archivos'" @click="link = 'archivos'"
+            active-class="bg-primary text-white">
+            <q-item-section avatar>
+              <q-icon name="folder_open" />
+            </q-item-section>
+
+            <q-item-section>Archivos</q-item-section>
+          </q-item>
 
           <q-item clickable v-ripple :active="link === 'outbox'" @click="link = 'outbox'"
             active-class="bg-primary text-white">

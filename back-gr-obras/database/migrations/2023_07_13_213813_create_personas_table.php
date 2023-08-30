@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('nombres', 191);
             $table->string('a_paterno', 191);
             $table->string('a_materno', 191);
-            $table->string('nombre_completo', 191)->nullable();
+            $table->string('nombre_completo', 573)->nullable();
             $table->string('email', 191)->nullable();
             $table->string('direccion', 191)->nullable();
             $table->char('celular', 9)->nullable();
@@ -31,8 +31,8 @@ return new class extends Migration
             $table->unsignedBigInteger('trabajador_id')->nullable();
             $table->foreign('trabajador_id')->references('id')->on('trabajadores')->nullOnDelete();
 
-            $table->unsignedBigInteger('ubigeo_id')->nullable();
-            $table->foreign('ubigeo_id')->references('id')->on('ubigeos')->nullOnDelete();
+            $table->char('ubigeo_cod', 6)->nullable();
+            $table->foreign('ubigeo_cod')->references('codigo')->on('ubigeos')->nullOnDelete();
             $table->timestamps();
         });
     }

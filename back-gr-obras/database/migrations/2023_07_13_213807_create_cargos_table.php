@@ -16,9 +16,6 @@ return new class extends Migration
         Schema::create('cargos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 191);
-
-            $table->unsignedBigInteger('trabajador_id')->nullable();
-            $table->foreign('trabajador_id')->references('id')->on('trabajadores')->nullOnDelete();
             $table->timestamps();
         });
     }

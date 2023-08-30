@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Cargo;
 use App\Models\Persona;
 use App\Models\Profesion;
 use Illuminate\Database\Seeder;
@@ -25,7 +26,9 @@ class DatabaseSeeder extends Seeder
         //     'permiso_req' => 'admin_configuraciones'
         // ]);
         // \App\Models\User::factory(10)->create();
+        Cargo::factory(100)->create();
         Profesion::factory(100)->create();
+        Persona::factory(100)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
@@ -34,6 +37,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PermissionSeeder::class,
             ClientTokenSeeder::class,
+            UbigeoSeeder::class
         ]);
     }
 }

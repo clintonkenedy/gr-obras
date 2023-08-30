@@ -24,8 +24,8 @@ return new class extends Migration
             $table->decimal('monto_adqui', 14, 2);
             $table->decimal('monto_proceso', 14, 2);
             $table->decimal('monto_total', 14, 2);
-            $table->string('archivo_cronograma', 191);
-            $table->string('archivo_requerimientos', 191);
+            $table->string('archivo_cronograma', 191)->nullable();
+            $table->string('archivo_requerimientos', 191)->nullable();
 
             $table->unsignedBigInteger('obra_id')->nullable();
             $table->foreign('obra_id')->references('id')->on('obras')->nullOnDelete();

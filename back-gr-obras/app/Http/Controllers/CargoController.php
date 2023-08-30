@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CargoRequest;
 use App\Models\Cargo;
 use Illuminate\Http\Request;
 
@@ -12,9 +13,15 @@ class CargoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Cargo::paginate($this->getPageSize());
+        return $this->generateViewSetList(
+            $request,
+            Cargo::query(),
+            [],
+            ['id', 'nombre'],
+            ['id', 'nombre']
+        );
     }
 
     /**
@@ -23,7 +30,7 @@ class CargoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CargoRequest $request)
     {
         return response(Cargo::create($request->all()), 201);
     }
@@ -46,7 +53,7 @@ class CargoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CargoRequest $request, $id)
     {
         Cargo::find($id)->update($request->all());
         return response([$request, $id]);

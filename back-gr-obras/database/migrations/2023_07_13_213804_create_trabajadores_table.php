@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('profesion', 191);
             $table->string('condicion', 100);
-
             $table->unsignedBigInteger('obra_id')->nullable();
             $table->foreign('obra_id')->references('id')->on('obras')->nullOnDelete();
             $table->timestamps();

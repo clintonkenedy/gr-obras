@@ -15,11 +15,12 @@ return new class extends Migration
     {
         Schema::create('archivos', function (Blueprint $table) {
             $table->id();
-            $table->string('tipo', 255);
-            $table->string('nombre', 255);
+            $table->string('tipo', 255)->nullable();
+            $table->string('nombre', 255)->nullable();
+            $table->string('url', 255)->nullable();
 
-            $table->unsignedBigInteger('avance_id')->nullable();
-            $table->foreign('avance_id')->references('id')->on('avances')->nullOnDelete();
+            // $table->unsignedBigInteger('avance_id')->nullable();
+            // $table->foreign('avance_id')->references('id')->on('avances')->nullOnDelete();
             $table->timestamps();
         });
     }

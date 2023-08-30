@@ -13,6 +13,7 @@ class Archivo extends Model
     protected $fillable = [
       'tipo',
       'nombre',
-      'avance_id',
+      'url'
+      // 'avance_id',
     ];
 }
