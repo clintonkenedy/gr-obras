@@ -17,19 +17,20 @@ class PermissionSeeder extends Seeder
     public function run()
     {
         //Roles
-        $admin = Role::firstOrCreate(['name' => 'Administrador'], ['name' => 'Administrador']);
-        $operator = Role::firstOrCreate(['name' => 'Operador'], ['name' => 'Operador']);
+        $coordinador = Role::firstOrCreate(['name' => 'Coordinador'], ['name' => 'Coordinador']);
+        $residente = Role::firstOrCreate(['name' => 'Residente'], ['name' => 'Residente']);
+        $economista = Role::firstOrCreate(['name' => 'Economista'], ['name' => 'Economista']);
 
         //Profesiones
         Permission::firstOrCreate(['name' => 'admin_profesiones'], [
             'name' => 'admin_profesiones',
             'description' => 'Acceder a Profesiones'
-        ])->assignRole([$admin]);
+        ])->assignRole([$coordinador]);
 
         //Cargos
         Permission::firstOrCreate(['name' => 'admin_cargos'], [
             'name' => 'admin_cargos',
             'description' => 'Acceder a Cargos'
-        ])->assignRole([$admin]);
+        ])->assignRole([$coordinador]);
     }
 }

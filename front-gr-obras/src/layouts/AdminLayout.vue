@@ -77,6 +77,14 @@
             </q-item>
           </q-expansion-item>
 
+          <q-item :to="{ name: 'Administrativos' }" clickable v-ripple :active="link === 'Administrativos'" @click="link = 'Administrativos'"
+            active-class="bg-primary text-white">
+            <q-item-section avatar>
+              <q-icon name="mdi-account-tie" />
+            </q-item-section>
+            <q-item-section>Administrativos</q-item-section>
+          </q-item>
+
           <q-expansion-item icon="mdi-account-hard-hat" label="Trabajadores">
             <q-item :to="{ name: 'Trabajadores' }" clickable v-ripple :active="link === 'Trabajadores'"
               @click="link = 'Trabajadores'" :inset-level="0.5" active-class="bg-primary text-white">

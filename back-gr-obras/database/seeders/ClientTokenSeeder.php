@@ -17,12 +17,12 @@ class ClientTokenSeeder extends Seeder
     public function run()
     {
         //
-        $user = User::create([
-            'name' => 'password',
-            'email' => 'password@gmail.com',
-            'password'=>bcrypt('password'),
-        ]);
-        $user->assignRole('Administrador');
+        // $user = User::create([
+        //     'name' => 'password',
+        //     'email' => 'password@gmail.com',
+        //     'password'=>bcrypt('password'),
+        // ]);
+        // $user->assignRole('Administrador');
 
        DB::table('oauth_clients')->insert([
            'name' => 'Laravel Password Grant Client',
