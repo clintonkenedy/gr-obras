@@ -7,23 +7,30 @@ use Illuminate\Database\Eloquent\Model;
 
 class Obra extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $table = 'obras';
-    protected $fillable = [
-      'cui',
-      'meta',
-      'nombre_proyecto',
-      'sector',
-      'estado_obra',
-      'dura_dias',
-      'fec_ini',
-      'fec_fin',
-      'archivo_resolucion',
-      'archivo_kmz',
-      'ubigeo_id',
-      'coordinador_id',
-      'residente_id',
-      'economista_id',
-    ];
+  protected $table = 'obras';
+  protected $fillable = [
+    'cui',
+    'meta',
+    'nombre_proyecto',
+    'sector',
+    'estado_obra',
+    'dura_dias',
+    'fec_ini',
+    'fec_fin',
+    'ubigeo_cod',
+    'coordinador_id',
+    'residente_id',
+    'economista_id',
+  ];
+
+  public function resolucion()
+  {
+    return $this->hasOne('App\Models\Archivo', 'obra_resolucion_id');
+  }
+  public function kmz()
+  {
+    return $this->hasOne('App\Models\Archivo', 'obra_kmz_id');
+  }
 }

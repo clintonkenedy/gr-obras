@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Archivo;
 use App\Models\Obra;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class ObraController extends Controller
 {
@@ -25,7 +28,25 @@ class ObraController extends Controller
      */
     public function store(Request $request)
     {
-        return response(Obra::create($request->all()), 201);
+        $obra = Obra::create([
+            'cui' => $request->cui,
+            'meta' => $request->meta,
+            'nombre_proyecto' => $request->nombre_proyecto,
+            'sector' => $request->sector,
+            'estado_obra' => $request->estado_obra,
+            'dura_dias' => $request->dura_dias,
+            'fec_ini' => $request->fec_ini,
+            'fec_fin' => $request->fec_fin,
+            'ubigeo_cod' => $request->ubigeo_cod,
+            'coordinador_id' => $request->coordinador_id,
+            'residente_id' => $request->residente_id,
+            'economista_id' => $request->economista_id,
+        ]);
+
+        Archivo::AgregarArchivo($request, 'resolucion', obra_resolucion_id: $obra->id);
+        Archivo::AgregarArchivo($request, 'kmz', obra_kmz_id: $obra->id);
+
+        return response($obra, 201);
     }
 
     /**
@@ -36,7 +57,8 @@ class ObraController extends Controller
      */
     public function show($id)
     {
-        return response(Obra::find($id));
+        $obra = Obra::with('resolucion', 'kmz')->find($id, ['*']);
+        return response($obra, 200);
     }
 
     /**
@@ -48,8 +70,28 @@ class ObraController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Obra::find($id)->update($request->all());
-        return response([$request, $id]);
+        $data = json_decode($request->data);
+        //
+        $obra = Obra::find($id);
+        $obra->update([
+            'cui' => $data->cui,
+            'meta' => $data->meta,
+            'nombre_proyecto' => $data->nombre_proyecto,
+            'sector' => $data->sector,
+            'estado_obra' => $data->estado_obra,
+            'dura_dias' => $data->dura_dias,
+            'fec_ini' => $data->fec_ini,
+            'fec_fin' => $data->fec_fin,
+            'ubigeo_cod' => $data->ubigeo_cod,
+            'coordinador_id' => $data->coordinador_id,
+            'residente_id' => $data->residente_id,
+            'economista_id' => $data->economista_id,
+        ]);
+
+        Archivo::AgregarArchivo($request, 'file1', obra_resolucion_id: $obra->id, archivo: $obra->resolucion);
+        Archivo::AgregarArchivo($request, 'file2', obra_kmz_id: $obra->id, archivo: $obra->kmz);
+        
+        return response([$obra, $id]);
     }
 
     /**

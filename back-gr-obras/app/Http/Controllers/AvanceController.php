@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Archivo;
 use App\Models\Avance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AvanceController extends Controller
 {
@@ -25,7 +27,25 @@ class AvanceController extends Controller
      */
     public function store(Request $request)
     {
-        return response(Avance::create($request->all()), 201);
+        $avance = Avance::create($request->all());
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $f) {
+                $nombre = Str::random(5) . '.' . $f->getClientOriginalExtension();
+                // Guardando archivo
+                $f->storeAs('public', $nombre);
+                Archivo::create([
+                    'extension' => $f->getClientOriginalExtension(),
+                    'es_plantilla' => false,
+                    'nombre' => $nombre,
+                    'url' => url('storage/' . $nombre),
+                    'desc' => pathinfo($f->getClientOriginalName(), PATHINFO_FILENAME),
+                    'size' => round($f->getSize() / (1024 * 1024), 2) . 'MB',
+                    'avance_id' => $avance->id
+                ]);
+            }
+        }
+
+        return response($avance, 201);
     }
 
     /**
@@ -36,7 +56,8 @@ class AvanceController extends Controller
      */
     public function show($id)
     {
-        return response(Avance::find($id));
+        $avance = Avance::with('archivos')->find($id, ['*']);
+        return response($avance);
     }
 
     /**
@@ -48,8 +69,27 @@ class AvanceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Avance::find($id)->update($request->all());
-        return response([$request, $id]);
+        $avance = Avance::find($id);
+        $avance->update($request->all());
+        if ($request->hasFile('files')) {
+            // return response($request->file('files'));
+            foreach ($request->file('files') as $f) {
+                $nombre = Str::random(5) . '.' . $f->getClientOriginalExtension();
+                // Guardando archivo
+                $f->storeAs('public', $nombre);
+                Archivo::create([
+                    'extension' => $f->getClientOriginalExtension(),
+                    'es_plantilla' => false,
+                    'nombre' => $nombre,
+                    'url' => url('storage/' . $nombre),
+                    'desc' => pathinfo($f->getClientOriginalName(), PATHINFO_FILENAME),
+                    'size' => round($f->getSize() / (1024 * 1024), 2) . 'MB',
+                    'avance_id' => $avance->id
+                ]);
+            }
+        }
+
+        return response([$avance, $id]);
     }
 
     /**

@@ -20,8 +20,16 @@ class Cronograma extends Model
       'monto_adqui',
       'monto_proceso',
       'monto_total',
-      'archivo_cronograma',
-      'archivo_requerimientos',
       'obra_id',
+      'administrativo_id',
     ];
+
+    public function arch_cronograma()
+    {
+      return $this->hasOne('App\Models\Archivo', 'arch_cronograma_id');
+    }
+    public function requerimientos()
+    {
+      return $this->hasOne('App\Models\Archivo', 'cronograma_req_id');
+    }
 }

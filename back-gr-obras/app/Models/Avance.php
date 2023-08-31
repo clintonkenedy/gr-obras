@@ -12,8 +12,18 @@ class Avance extends Model
     protected $table = 'avances';
     protected $fillable = [
       'tipo',
-      'fec',
+      'fecha',
       'estado',
+      'avance_fisico_km',
+      'avance_fisico_npisos',
+      'avance_fisico_metros',
+      'avance_fisico_otros',
+      'avance_financiero',
       'obra_id',
+      'cronograma_id'
     ];
+
+    public function archivos(){
+      return $this->hasMany('App\Models\Archivo', 'avance_id');
+    }
 }

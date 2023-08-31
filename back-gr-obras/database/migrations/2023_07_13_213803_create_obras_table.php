@@ -23,11 +23,11 @@ return new class extends Migration
             $table->smallInteger('dura_dias');
             $table->date('fec_ini');
             $table->date('fec_fin');
-            $table->string('archivo_resolucion', 191)->nullable();
-            $table->string('archivo_kmz', 191)->nullable();
+            // $table->string('archivo_resolucion', 191)->nullable();
+            // $table->string('archivo_kmz', 191)->nullable();
 
-            $table->unsignedBigInteger('ubigeo_id')->nullable();
-            $table->foreign('ubigeo_id')->references('id')->on('ubigeos')->nullOnDelete();
+            $table->char('ubigeo_cod', 6)->nullable();
+            $table->foreign('ubigeo_cod')->references('codigo')->on('ubigeos')->nullOnDelete();
             
             $table->unsignedBigInteger('coordinador_id')->nullable();
             $table->foreign('coordinador_id')->references('id')->on('administrativos')->nullOnDelete();
