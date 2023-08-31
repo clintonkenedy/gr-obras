@@ -81,13 +81,6 @@ const columns = [
         sortable: true,
     },
     {
-        name: "condicion",
-        label: "Condición",
-        aling: "center",
-        field: (row) => row.condicion,
-        sortable: true,
-    },
-    {
         name: "profesion",
         label: "Profesión",
         aling: "center",
@@ -99,6 +92,13 @@ const columns = [
         label: "Cargo",
         aling: "center",
         field: (row) => row.cargo,
+        sortable: true,
+    },
+    {
+        name: "condicion",
+        label: "Condición",
+        aling: "center",
+        field: (row) => row.condicion,
         sortable: true,
     },
 ];
