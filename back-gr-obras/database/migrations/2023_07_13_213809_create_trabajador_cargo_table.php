@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('trabajador_cargo', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('trabajador_id')->nullable();
-            $table->unsignedBigInteger('cargo_id')->nullable();
-            $table->foreign('trabajador_id')->references('id')->on('trabajadores')->nullOnDelete();
-            $table->foreign('cargo_id')->references('id')->on('cargos')->nullOnDelete();
+            $table->unsignedBigInteger('trabajador_id');
+            $table->unsignedBigInteger('cargo_id');
+            $table->foreign('trabajador_id')->references('id')->on('trabajadores')->onDelete('cascade');
+            $table->foreign('cargo_id')->references('id')->on('cargos')->onDelete('cascade');
             $table->timestamps();
         });
     }

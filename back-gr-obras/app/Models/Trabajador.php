@@ -12,6 +12,7 @@ class Trabajador extends Model
   protected $table = 'trabajadores';
   protected $fillable = [
     'profesion',
+    'cargo',
     'condicion',
     'obra_id',
   ];
