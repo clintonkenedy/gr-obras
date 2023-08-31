@@ -1,42 +1,18 @@
 <template>
   <div class="q-pa-md">
-    <q-table
-      :rows-per-page-options="[7, 10]"
-      flat
-      bordered
-      ref="tableRef"
-      color="primary"
-      :rows="rows"
-      :columns="columns"
-      row-key="id"
-      v-model:pagination="pagination"
-      :loading="loading"
-      :filter="filter"
-      binary-state-sort
-      @request="onRequest"
-    >
+    <q-table :rows-per-page-options="[7, 10]" flat bordered ref="tableRef" color="primary" :rows="rows" :columns="columns"
+      row-key="id" v-model:pagination="pagination" :loading="loading" :filter="filter" binary-state-sort
+      @request="onRequest">
       <template v-slot:top-left>
-        <q-btn
-          color="primary"
-          :disable="loading"
-          :label="$q.screen.lt.sm ? '' : 'Agregar'"
-          icon-right="add"
-          @click="avancesformRef.show = true"
-        />
+        <q-btn color="primary" :disable="loading" :label="$q.screen.lt.sm ? '' : 'Agregar'" icon-right="add"
+          @click="avancesformRef.show = true" />
 
       </template>
       <!-- <template v-slot:loading>
         <q-inner-loading showing color="primary" />
       </template> -->
       <template v-slot:top-right>
-        <q-input
-          outlined
-          borderless
-          dense
-          debounce="500"
-          v-model="filter"
-          placeholder="Search"
-        >
+        <q-input outlined borderless dense debounce="500" v-model="filter" placeholder="Search">
           <template v-slot:append>
             <q-icon name="search" />
           </template>
@@ -44,16 +20,11 @@
       </template>
       <template v-slot:header="props">
         <q-tr :props="props">
-          <q-th
-            style="
+          <q-th style="
                {
                 width: 30%;
               }
-            "
-            v-for="col in props.cols"
-            :key="col.name"
-            :props="props"
-          >
+            " v-for="col in props.cols" :key="col.name" :props="props">
             {{ col.label }}
           </q-th>
           <q-th auto-width> Acciones </q-th>
@@ -66,29 +37,14 @@
             {{ col.value }}
           </q-td>
           <q-td auto-width>
-            <q-btn
-              size="sm"
-              outline
-              color="green"
-              round
-              @click="editar(props.row.id)"
-              icon="edit"
-              class="q-mr-xs"
-            />
-            <q-btn
-              size="sm"
-              outline
-              color="red"
-              round
-              @click="eliminar(props.row.id)"
-              icon="delete"
-            />
+            <q-btn size="sm" outline color="green" round @click="editar(props.row.id)" icon="edit" class="q-mr-xs" />
+            <q-btn size="sm" outline color="red" round @click="eliminar(props.row.id)" icon="delete" />
           </q-td>
         </q-tr>
       </template>
     </q-table>
   </div>
-  <AvancesForm ref="avancesformRef" @save="save()"></AvancesForm>
+  <AvancesForm ref="avancesformRef" @save="save()" @deleteFile="id => editar(id)"></AvancesForm>
 </template>
 
 <script setup>
@@ -157,7 +113,7 @@ async function onRequest(props) {
   const order_by = descending ? "-" + sortBy : sortBy;
   const { data, total = 0 } = await AvancesService.getData({
     params: { rowsPerPage: fetchCount, page, search: filter, order_by },
-  });  
+  });
   // clear out existing data and add new
   rows.value.splice(0, rows.value.length, ...data);
   // don't forget to update local pagination object
@@ -185,12 +141,12 @@ async function save() {
     avancesformRef.value.show = false;
     tableRef.value.requestServerInteraction();
     $q.notify({
-          type: 'positive',
-          message: 'Guardado con Exito.',
-          position: 'top-right',
-          progress: true,
-          timeout: 1000,
-        })
+      type: 'positive',
+      message: 'Guardado con Exito.',
+      position: 'top-right',
+      progress: true,
+      timeout: 1000,
+    })
   } catch (e) {
     console.log(e.response.data.errors);
     avancesformRef.value.setErrors(e.response.data.errors);
@@ -202,6 +158,7 @@ async function editar(id) {
   avancesformRef.value.show = true;
   const row = await AvancesService.get(id);
   avancesformRef.value.setValue(row);
+  avancesformRef.value.edit = true;
 }
 
 async function eliminar(id) {
@@ -215,12 +172,12 @@ async function eliminar(id) {
     await AvancesService.delete(id);
     tableRef.value.requestServerInteraction();
     $q.notify({
-          type: 'positive',
-          message: 'Eliminado con Exito.',
-          position: 'top-right',
-          progress: true,
-          timeout: 1000,
-        })
+      type: 'positive',
+      message: 'Eliminado con Exito.',
+      position: 'top-right',
+      progress: true,
+      timeout: 1000,
+    })
   });
 }
 </script>

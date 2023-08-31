@@ -15,9 +15,23 @@ class AvancesService {
 
     static async save(reg) {
         if (reg.id === undefined || reg.id === null) {
-            return (await api.post("/api/obras/avance", reg)).data;
+            return (await api.post("/api/obras/avance", reg, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            })).data;
         } else {
-            return (await api.put(`/api/obras/avance/${reg.id}`, reg)).data;
+            var formData = new FormData();
+            formData.append('_method', 'put');
+            formData.append('data', JSON.stringify(reg));
+            reg.files.forEach(a => {
+                formData.append('files[]', a);
+            });
+            return (await api.post(`/api/obras/avance/${reg.id}`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            })).data;
         }
     }
 }

@@ -217,6 +217,7 @@ async function editar(id) {
   obrasformRef.value.show = true;
   const row = await ObrasService.get(id);
   obrasformRef.value.setValue(row);
+  obrasformRef.value.edit = true;
 }
 
 async function eliminar(id) {

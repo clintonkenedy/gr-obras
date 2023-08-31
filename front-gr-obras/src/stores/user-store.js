@@ -26,6 +26,7 @@ export const useUserStore = defineStore("user", {
         });
         let tokenString = "Bearer " + res.data.access_token;
         Cookies.set("token", tokenString);
+        // window.location.reload();
         return res;
       } catch (e) {
         if (e) throw e;

@@ -25,8 +25,8 @@ class CronogramasService {
             var formData = new FormData();
             formData.append('_method', 'put');
             formData.append('data', JSON.stringify(reg));
-            formData.append('file1', reg.archivo_cronograma);
-            formData.append('file2', reg.archivo_requerimientos);
+            formData.append('file1', reg.arch_cronograma);
+            formData.append('file2', reg.requerimientos);
             return (await api.post(`/api/obras/cronograma/${reg.id}`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data"

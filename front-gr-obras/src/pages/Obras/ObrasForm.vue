@@ -35,10 +35,9 @@
 
           <div class="row">
             <div class="col-sm-3 col-xs-12">
-              <q-select class="q-mx-sm" borderless dense v-model="form.estado_obra" :options="['pendiente']"
-                label="Estado" :error-message="errors.estado_obra" :error="errors.estado_obra != null" />
-              <!-- <q-input  outlined borderless dense debounce="300" v-model="form.nombre" label="Estado"
-                :error-message="errors.nombre" :error="errors.nombre != null" /> -->
+              <q-select class="q-mx-sm" borderless dense v-model="form.estado_obra"
+                :options="['pendiente', 'ejecución', 'finalizado']" label="Estado" :error-message="errors.estado_obra"
+                :error="errors.estado_obra != null" />
             </div>
             <div class="col-sm-3 col-xs-12 q-py-xs">
               <q-input class="q-mx-sm" outlined borderless dense debounce="300" v-model="form.dura_dias"
@@ -54,19 +53,9 @@
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-sm-4 col-xs-12">
-              <q-input class="q-mx-sm" outlined borderless dense debounce="300" v-model="form.archivo_resolucion"
-                label="A. Resolución" :error-message="errors.archivo_resolucion" :error="errors.archivo_resolucion != null" />
-            </div>
-            <div class="col-sm-4 col-xs-12">
-              <q-input class="q-mx-sm" outlined borderless dense debounce="300" v-model="form.archivo_kmz" label="A. KMZ"
-                :error-message="errors.archivo_kmz" :error="errors.archivo_kmz != null" />
-            </div>
-            <div class="col-sm-4 col-xs-12">
-              <q-input class="q-mx-sm" outlined borderless dense debounce="300" v-model="form.ubigeo_id" label="Ubigeo"
-                :error-message="errors.ubigeo_id" :error="errors.ubigeo_id != null" />
-            </div>
+          <div class="row q-mb-md">
+            <SelectUbigeo ref="ubigeoSelectRef" :ubigeo_cod="form.ubigeo_cod" @selectedItem="updateUbigeo($event)">
+            </SelectUbigeo>
           </div>
 
           <div class="row">
@@ -84,6 +73,32 @@
             </div>
           </div>
 
+          <div class="row">
+            <div class="col-sm-6 col-xs-12">
+              <q-file class="q-mx-sm" outlined v-model="form.resolucion" label="A. Resolución" borderless dense
+                debounce="300">
+                <template v-slot:prepend>
+                  <q-icon name="attach_file" />
+                </template>
+              </q-file>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+              <q-file class="q-mx-sm" outlined v-model="form.kmz" label="A. kmz" borderless dense debounce="300">
+                <template v-slot:prepend>
+                  <q-icon name="attach_file" />
+                </template>
+              </q-file>
+            </div>
+          </div>
+
+          <div class="row q-mt-md">
+            <div class="col-sm-6 col-xs-12 q-mb-sm">
+              <ButtonDescargarArchivo v-show="edit && form.resolucion" :form="form.resolucion" label="A. Resolución"/>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+              <ButtonDescargarArchivo v-show="edit && form.kmz" :form="form.kmz" label="A. KMZ"/>
+            </div>
+          </div>
         </div>
 
       </q-card-section>
@@ -98,6 +113,8 @@
 </template>
 <script setup>
 import { ref, onMounted } from "vue";
+import SelectUbigeo from "src/components/SelectUbigeo.vue";
+import ButtonDescargarArchivo from "src/components/ButtonDescargarArchivo.vue";
 
 const emits = defineEmits(["save"]);
 
@@ -106,6 +123,8 @@ const loading = ref(false);
 //Estados reactivos
 const form = ref({});
 const errors = ref({});
+const ubigeoSelectRef = ref(null);
+const edit = ref(false);
 
 //onMounted
 onMounted(() => {
@@ -114,16 +133,38 @@ onMounted(() => {
 
 function setValue(values) {
   form.value = values;
+  ubigeoSelectRef.value.getUbigeo(form.value.ubigeo_cod);
 }
 function save() {
   emits("save");
 }
 function reset() {
-  form.value = {}
+  form.value = {};
   errors.value = {};
+  edit.value = false;
 }
 function setErrors(row) {
-  errors.value.nombre = row.nombre[0];
+  console.log(row);
+  // errors.value.nombre = row.nombre[0];
+}
+
+// const descargarCronograma = () => {
+//   if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'pdf'].includes(form.value.resolucion.extension)) {
+//     window.open(form.value.resolucion.url, '_blank')
+//   } else {
+//     window.location.href = form.value.resolucion.url;
+//   }
+// };
+// const descargarRequerimientos = () => {
+//   if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'pdf'].includes(form.value.kmz.extension)) {
+//     window.open(form.value.kmz.url, '_blank')
+//   } else {
+//     window.location.href = form.value.kmz.url;
+//   }
+// };
+
+function updateUbigeo(event) {
+  form.value.ubigeo_cod = event;
 }
 
 defineExpose({
@@ -133,7 +174,8 @@ defineExpose({
   form,
   reset,
   setValue,
-  setErrors
+  setErrors,
+  edit
 });
 </script>
 <style lang="sass" scoped>

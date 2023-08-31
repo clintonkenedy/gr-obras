@@ -68,17 +68,16 @@
 
           <div class="row">
             <div class="col-sm-6 col-xs-12">
-              <q-file class="q-mx-sm" outlined v-model="form.archivo_cronograma" label="A. Cronograma" borderless dense
-                debounce="300" :error-message="errors.archivo_cronograma" :error="errors.archivo_cronograma != null">
+              <q-file class="q-mx-sm" outlined v-model="form.arch_cronograma" label="A. Cronograma" borderless dense
+                debounce="300">
                 <template v-slot:prepend>
                   <q-icon name="attach_file" />
                 </template>
               </q-file>
             </div>
             <div class="col-sm-6 col-xs-12">
-              <q-file class="q-mx-sm" outlined v-model="form.archivo_requerimientos" label="A. Requerimientos" borderless
-                dense debounce="300" :error-message="errors.archivo_requerimientos"
-                :error="errors.archivo_requerimientos != null">
+              <q-file class="q-mx-sm" outlined v-model="form.requerimientos" label="A. Requerimientos" borderless
+                dense debounce="300">
                 <template v-slot:prepend>
                   <q-icon name="attach_file" />
                 </template>
@@ -86,13 +85,12 @@
             </div>
           </div>
 
-          <div class="row">
+          <div class="row q-mt-md">
             <div class="col-sm-6 col-xs-12 q-mb-sm">
-              <q-btn v-show="edit && form.archivo_cronograma" @click="descargarCronograma()" class="q-mx-sm" outline color="primary" icon="file_download" label="A. Cronograma" />
+              <ButtonDescargarArchivo v-show="edit && form.arch_cronograma" :form="form.arch_cronograma" label="A. Cronograma"/>
             </div>
             <div class="col-sm-6 col-xs-12">
-              <q-btn v-show="edit && form.archivo_requerimientos" @click="descargarRequerimientos()" class="q-mx-sm" outline color="primary" icon="file_download"
-                label="A. Requerimientos" />
+              <ButtonDescargarArchivo v-show="edit && form.requerimientos" :form="form.requerimientos" label="A. Requerimientos"/>
             </div>
           </div>
 
@@ -109,8 +107,8 @@
   </q-dialog>
 </template>
 <script setup>
-import { QPopupEdit } from "quasar";
 import { ref, onMounted } from "vue";
+import ButtonDescargarArchivo from "src/components/ButtonDescargarArchivo.vue";
 
 const emits = defineEmits(["save"]);
 
@@ -140,21 +138,6 @@ function reset() {
 function setErrors(row) {
   errors.value = row;
 }
-
-const descargarCronograma = () => {
-  if(row.tipo === 'png' || row.tipo === 'pdf' || row.tipo === 'jpg' || row.tipo === 'jpeg'){
-    window.open(form.value.url_cronograma, '_blank')
-  }else{
-    window.location.href = form.value.url_cronograma;
-  }
-};
-const descargarRequerimientos = () => {
-  if(row.tipo === 'png' || row.tipo === 'pdf' || row.tipo === 'jpg' || row.tipo === 'jpeg'){
-    window.open(form.value.url_requerimientos, '_blank')
-  }else{
-    window.location.href = form.value.url_requerimientos;
-  }
-};
 
 defineExpose({
   show,

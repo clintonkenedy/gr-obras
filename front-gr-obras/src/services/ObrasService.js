@@ -15,9 +15,22 @@ class ObrasService {
 
     static async save(reg) {
         if (reg.id === undefined || reg.id === null) {
-            return (await api.post("/api/obras/obra", reg)).data;
+            return (await api.post("/api/obras/obra", reg, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            })).data;
         } else {
-            return (await api.put(`/api/obras/obra/${reg.id}`, reg)).data;
+            var formData = new FormData();
+            formData.append('_method', 'put');
+            formData.append('data', JSON.stringify(reg));
+            formData.append('file1', reg.resolucion);
+            formData.append('file2', reg.kmz);
+            return (await api.post(`/api/obras/obra/${reg.id}`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            })).data;
         }
     }
 }
