@@ -43,8 +43,10 @@
                 :error="errors.porcentaje != null" />
             </div>
             <div class="col-sm-3 col-xs-12">
-              <q-input class="q-mx-sm" outlined borderless dense debounce="300" v-model="form.obra_id" label="Obra"
-                :error-message="errors.obra_id" :error="errors.obra_id != null" />
+              <SelectObra ref="obraSelectRef" @selectedItem="updateObra($event)" :error-message="errors.obra_id"
+            :error="errors.obra_id != null" />
+              <!-- <q-input class="q-mx-sm" outlined borderless dense debounce="300" v-model="form.obra_id" label="Obra"
+                :error-message="errors.obra_id" :error="errors.obra_id != null" /> -->
             </div>
           </div>
 
@@ -109,6 +111,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import ButtonDescargarArchivo from "src/components/ButtonDescargarArchivo.vue";
+import SelectObra from "src/components/SelectObra.vue";
 
 const emits = defineEmits(["save"]);
 
@@ -119,6 +122,8 @@ const form = ref({});
 const errors = ref({});
 const edit = ref(false);
 
+const obraSelectRef = ref(null);
+
 //onMounted
 onMounted(() => {
   reset();
@@ -126,6 +131,7 @@ onMounted(() => {
 
 function setValue(values) {
   form.value = values;
+  obraSelectRef.value.getItem(values.obra_id);
 }
 function save() {
   emits("save");
@@ -137,6 +143,10 @@ function reset() {
 }
 function setErrors(row) {
   errors.value = row;
+}
+
+function updateObra(event) {
+  form.value.obra_id = event.id;
 }
 
 defineExpose({

@@ -51,12 +51,16 @@
 
           <div class="row">
             <div class="col-sm-6 col-xs-12 q-py-xs">
-              <q-input class="q-mx-sm" outlined borderless dense debounce="300" v-model="form.obra_id" label="Obra"
-                :error-message="errors.obra_id" :error="errors.obra_id != null" />
+              <SelectObra class="q-mx-sm" ref="obraSelectRef" @selectedItem="updateObra($event)" :error-message="errors.obra_id"
+            :error="errors.obra_id != null" />
+              <!-- <q-input class="q-mx-sm" outlined borderless dense debounce="300" v-model="form.obra_id" label="Obra"
+                :error-message="errors.obra_id" :error="errors.obra_id != null" /> -->
             </div>
             <div class="col-sm-6 col-xs-12 q-py-xs">
-              <q-input class="q-mx-sm" outlined borderless dense debounce="300" v-model="form.cronograma_id"
-                label="Cronograma" :error-message="errors.cronograma_id" :error="errors.cronograma_id != null" />
+              <SelectCronograma class="q-mx-sm" ref="cronogramaSelectRef" @selectedItem="updateCronograma($event)" :error-message="errors.cronograma_id"
+            :error="errors.cronograma_id != null" />
+              <!-- <q-input class="q-mx-sm" outlined borderless dense debounce="300" v-model="form.cronograma_id"
+                label="Cronograma" :error-message="errors.cronograma_id" :error="errors.cronograma_id != null" /> -->
             </div>
           </div>
 
@@ -117,6 +121,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import ArchivosService from "src/services/ArchivosService";
+import SelectObra from "src/components/SelectObra.vue";
+import SelectCronograma from "src/components/SelectCronograma.vue";
 import { useQuasar } from "quasar";
 const $q = useQuasar();
 
@@ -129,6 +135,9 @@ const form = ref({});
 const errors = ref({});
 const edit = ref(false);
 
+const obraSelectRef = ref(null);
+const cronogramaSelectRef = ref(null);
+
 //onMounted
 onMounted(() => {
   reset();
@@ -137,6 +146,8 @@ onMounted(() => {
 function setValue(values) {
   form.value = {};
   form.value = values;
+  obraSelectRef.value.getItem(values.obra_id);
+  cronogramaSelectRef.value.getItem(values.obra_id);
 }
 function save() {
   emits("save");
@@ -177,6 +188,13 @@ async function eliminar(id) {
     })
     emits("deleteFile", form.value.id);
   });
+}
+
+function updateObra(event) {
+  form.value.obra_id = event.id;
+}
+function updateCronograma(event) {
+  form.value.cronograma_id = event.id;
 }
 
 defineExpose({

@@ -21,6 +21,16 @@
       :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'">
       <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
         <q-list padding class="text-grey-8">
+
+          <q-item to="/" clickable v-ripple :active="link === 'home'" @click="link = 'home'"
+            active-class="bg-primary text-white">
+            <q-item-section avatar>
+              <q-icon name="home" />
+            </q-item-section>
+
+            <q-item-section>Outbox</q-item-section>
+          </q-item>
+
           <q-expansion-item icon="mdi-account-lock" label="Seguridad y Acceso">
             <q-item
               :to="{ name: 'Permisos' }"
@@ -149,17 +159,6 @@
 
             <q-item-section>Archivos</q-item-section>
           </q-item>
-
-          <q-item clickable v-ripple :active="link === 'outbox'" @click="link = 'outbox'"
-            active-class="bg-primary text-white">
-            <q-item-section avatar>
-              <q-icon name="send" />
-            </q-item-section>
-
-            <q-item-section>Outbox</q-item-section>
-          </q-item>
-
-
 
 
           <q-separator />
