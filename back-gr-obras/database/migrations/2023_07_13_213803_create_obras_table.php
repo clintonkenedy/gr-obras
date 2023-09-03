@@ -19,12 +19,13 @@ return new class extends Migration
             $table->string('meta', 50);
             $table->string('nombre_proyecto', 500);
             $table->string('sector', 191);
-            $table->enum('estado_obra', ['pendiente', 'ejecución', 'finalizado']);
+            $table->enum('estado_obra', ['pendiente', 'en ejecución', 'finalizado', 'suspendido']);
             $table->smallInteger('dura_dias');
             $table->date('fec_ini');
             $table->date('fec_fin');
-            // $table->string('archivo_resolucion', 191)->nullable();
-            // $table->string('archivo_kmz', 191)->nullable();
+            $table->float('pim', 14, 2);
+            $table->float('saldo_asig', 14, 2);
+
 
             $table->char('ubigeo_cod', 6)->nullable();
             $table->foreign('ubigeo_cod')->references('codigo')->on('ubigeos')->nullOnDelete();

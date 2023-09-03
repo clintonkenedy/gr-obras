@@ -22,20 +22,11 @@ return new class extends Migration
             $table->string('size', 20)->nullable();
             $table->string('url');
 
-            $table->unsignedBigInteger('obra_resolucion_id')->nullable();
-            $table->foreign('obra_resolucion_id')->references('id')->on('obras')->nullOnDelete();
-
-            $table->unsignedBigInteger('obra_kmz_id')->nullable();
-            $table->foreign('obra_kmz_id')->references('id')->on('obras')->nullOnDelete();
-
-            $table->unsignedBigInteger('arch_cronograma_id')->nullable();
-            $table->foreign('arch_cronograma_id')->references('id')->on('cronogramas')->nullOnDelete();
-
-            $table->unsignedBigInteger('cronograma_req_id')->nullable();
-            $table->foreign('cronograma_req_id')->references('id')->on('cronogramas')->nullOnDelete();
+            $table->unsignedBigInteger('obra_id')->nullable();
+            $table->foreign('obra_id')->references('id')->on('obras')->onDelete('cascade');
 
             $table->unsignedBigInteger('avance_id')->nullable();
-            $table->foreign('avance_id')->references('id')->on('avances')->nullOnDelete();
+            $table->foreign('avance_id')->references('id')->on('avances')->onDelete('cascade');
 
             $table->timestamps();
         });

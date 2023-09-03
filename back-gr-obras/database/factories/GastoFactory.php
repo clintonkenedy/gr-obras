@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Cronograma>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Gasto>
  */
-class CronogramaFactory extends Factory
+class GastoFactory extends Factory
 {
     /**
      * Define the model's default state.

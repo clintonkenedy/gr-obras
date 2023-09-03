@@ -25,12 +25,8 @@ class Obra extends Model
     'economista_id',
   ];
 
-  public function resolucion()
+  public function obras()
   {
-    return $this->hasOne('App\Models\Archivo', 'obra_resolucion_id');
-  }
-  public function kmz()
-  {
-    return $this->hasOne('App\Models\Archivo', 'obra_kmz_id');
+    return $this->belongsToMany("App\Models\Gasto", "gasto_presupuesto_obra");
   }
 }

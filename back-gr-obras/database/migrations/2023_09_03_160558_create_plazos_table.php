@@ -13,20 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cronogramas', function (Blueprint $table) {
+        Schema::create('plazos', function (Blueprint $table) {
             $table->id();
-            $table->enum('tipo', ['semanal', 'mensual']);
+            $table->integer('dura_dias');
             $table->date('fec_ini');
             $table->date('fec_fin');
-            $table->decimal('presu_req', 14, 2);
-            $table->tinyInteger('num_req');
-            $table->decimal('porcentaje', 14, 2);
-            $table->decimal('monto_adqui', 14, 2);
-            $table->decimal('monto_proceso', 14, 2);
-            $table->decimal('monto_total', 14, 2);
-
-            $table->unsignedBigInteger('administrativo_id')->nullable();
-            $table->foreign('administrativo_id')->references('id')->on('administrativos')->nullOnDelete();
+            $table->date('fecha');
+            $table->string('comentario', 2000)->nullable();
 
             $table->unsignedBigInteger('obra_id')->nullable();
             $table->foreign('obra_id')->references('id')->on('obras')->nullOnDelete();
@@ -41,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cronogramas');
+        Schema::dropIfExists('plazos');
     }
 };
