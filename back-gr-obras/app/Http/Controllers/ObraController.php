@@ -43,9 +43,7 @@ class ObraController extends Controller
             'economista_id' => $request->economista_id,
         ]);
 
-        Archivo::AgregarArchivo($request, 'resolucion', obra_resolucion_id: $obra->id);
-        Archivo::AgregarArchivo($request, 'kmz', obra_kmz_id: $obra->id);
-
+        Archivo::AgregarArchivos($request, obra_id: $obra->id);
         return response($obra, 201);
     }
 
@@ -57,7 +55,7 @@ class ObraController extends Controller
      */
     public function show($id)
     {
-        $obra = Obra::with('resolucion', 'kmz')->find($id, ['*']);
+        $obra = Obra::with('files')->find($id, ['*']);
         return response($obra, 200);
     }
 
@@ -88,9 +86,7 @@ class ObraController extends Controller
             'economista_id' => $data->economista_id,
         ]);
 
-        Archivo::AgregarArchivo($request, 'file1', obra_resolucion_id: $obra->id, archivo: $obra->resolucion);
-        Archivo::AgregarArchivo($request, 'file2', obra_kmz_id: $obra->id, archivo: $obra->kmz);
-        
+        Archivo::AgregarArchivos($request, obra_id: $obra->id);
         return response([$obra, $id]);
     }
 

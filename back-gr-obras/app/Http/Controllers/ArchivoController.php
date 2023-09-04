@@ -29,7 +29,7 @@ class ArchivoController extends Controller
     {
         $nombre = $request->file('file');
         // Nombre
-        $nombre1 = 'cronograma' . Str::random(5) . '.' . $nombre->getClientOriginalExtension();
+        $nombre1 = Str::random(5) . '.' . $nombre->getClientOriginalExtension();
         // Guardando archivo
         $nombre->storeAs('public', $nombre1);
         

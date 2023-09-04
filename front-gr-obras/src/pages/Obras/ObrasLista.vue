@@ -96,7 +96,7 @@
       </template>
     </q-table>
   </div>
-  <ObrasForm ref="obrasformRef" @save="save()"></ObrasForm>
+  <ObrasForm ref="obrasformRef" @save="save()" @deleteFile="id => editar(id)"></ObrasForm>
 </template>
 
 <script setup>
@@ -207,7 +207,7 @@ async function save() {
           timeout: 1000,
         })
   } catch (e) {
-    console.log(e.response.data.errors);
+    console.log(e);
     obrasformRef.value.setErrors(e.response.data.errors);
     obrasformRef.value.loading = false;
   }

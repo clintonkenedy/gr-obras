@@ -19,12 +19,12 @@ return new class extends Migration
             $table->string('meta', 50);
             $table->string('nombre_proyecto', 500);
             $table->string('sector', 191);
-            $table->enum('estado_obra', ['pendiente', 'en ejecución', 'finalizado', 'suspendido']);
+            $table->enum('estado_obra', ['en ejecución', 'pendiente', 'suspendido', 'finalizado']);
             $table->smallInteger('dura_dias');
             $table->date('fec_ini');
             $table->date('fec_fin');
-            $table->float('pim', 14, 2);
-            $table->float('saldo_asig', 14, 2);
+            $table->float('pim', 14, 2)->default(0);
+            $table->float('saldo_asig', 14, 2)->default(0);
 
 
             $table->char('ubigeo_cod', 6)->nullable();

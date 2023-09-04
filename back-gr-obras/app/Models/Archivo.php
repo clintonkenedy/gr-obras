@@ -20,40 +20,31 @@ class Archivo extends Model
     'desc',
     'size',
     'url',
-    'obra_resolucion_id',
-    'obra_kmz_id',
-    'arch_cronograma_id',
-    'cronograma_req_id',
+    'obra_id',
     'avance_id',
   ];
 
-  public static function AgregarArchivo(Request $request, string $nombre, $archivo = null, $obra_resolucion_id = null, $obra_kmz_id = null, $arch_cronograma_id = null, $cronograma_req_id = null, $avance_id = null)
+  public static function AgregarArchivos(Request $request, $obra_id = null, $avance_id = null)
   {
-    if ($request->hasFile($nombre)) {
-      // Eliminar archivo.
-      // $resolucion_ant = $obra->resolucion;
-      if ($archivo && Storage::disk('local')->exists('public/' . $archivo->nombre)) {
-        Archivo::destroy($archivo->id);
-        Storage::disk('local')->delete('public/' . $archivo->nombre);
+    if ($request->hasFile('files')) {
+      foreach ($request->file('files') as $f) {
+        $nombre = Str::random(5) . '.' . $f->getClientOriginalExtension();
+        // // Eliminar archivo.
+        // if (Storage::disk('local')->exists('public/' . $nombre)) {
+        //   Storage::disk('local')->delete('public/' . $nombre);
+        // }
+        // Guardando archivo
+        $f->storeAs('public', $nombre);
+        Archivo::updateOrCreate(['nombre' => $nombre,], [
+          'extension' => $f->getClientOriginalExtension(),
+          'es_plantilla' => false,
+          'url' => url('storage/' . $nombre),
+          'desc' => pathinfo($f->getClientOriginalName(), PATHINFO_FILENAME),
+          'size' => round($f->getSize() / (1024 * 1024), 2) . 'MB',
+          'obra_id' => $obra_id,
+          'avance_id' => $avance_id
+        ]);
       }
-      // Crear un nuevo archivo.
-      $arhivo = $request->file($nombre);
-      // Nombre
-      $nombre_archivo = $nombre . Str::random(5) . '.' . $arhivo->getClientOriginalExtension();
-      // Guardando archivo
-      $arhivo->storeAs('public', $nombre_archivo);
-
-      Archivo::create([
-        'extension' => $arhivo->getClientOriginalExtension(),
-        'es_plantilla' => false,
-        'nombre' => $nombre_archivo,
-        'url' => url('storage/' . $nombre_archivo),
-        'obra_resolucion_id' => $obra_resolucion_id,
-        'obra_kmz_id' => $obra_kmz_id,
-        'arch_cronograma_id' => $arch_cronograma_id,
-        'cronograma_req_id' => $cronograma_req_id,
-        'avance_id' => $avance_id
-      ]);
     }
   }
 }

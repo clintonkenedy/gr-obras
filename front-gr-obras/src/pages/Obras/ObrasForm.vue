@@ -34,9 +34,9 @@
           </div>
 
           <div class="row">
-            <div class="col-sm-3 col-xs-12">
-              <q-select class="q-mx-sm" borderless dense v-model="form.estado_obra"
-                :options="['pendiente', 'ejecución', 'finalizado']" label="Estado" :error-message="errors.estado_obra"
+            <div class="col-sm-3 col-xs-12 q-py-xs">
+              <q-select class="q-mx-sm" outlined borderless dense v-model="form.estado_obra"
+                :options="['en ejecución', 'pendiente', 'suspendido', 'finalizado']" label="Estado" :error-message="errors.estado_obra"
                 :error="errors.estado_obra != null" />
             </div>
             <div class="col-sm-3 col-xs-12 q-py-xs">
@@ -91,12 +91,9 @@
             </div>
           </div>
 
-          <div class="row q-mt-md">
-            <div class="col-sm-6 col-xs-12 q-mb-sm">
-              <ButtonDescargarArchivo v-show="edit && form.resolucion" :form="form.resolucion" label="A. Resolución"/>
-            </div>
-            <div class="col-sm-6 col-xs-12">
-              <ButtonDescargarArchivo v-show="edit && form.kmz" :form="form.kmz" label="A. KMZ"/>
+          <div class="row" v-show="edit">
+            <div class="col q-py-sm">
+              <ListArchivos :files="form.files" @deleteFile="id => emits('deleteFile', form.id)" />
             </div>
           </div>
         </div>
@@ -114,9 +111,10 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import SelectUbigeo from "src/components/SelectUbigeo.vue";
-import ButtonDescargarArchivo from "src/components/ButtonDescargarArchivo.vue";
+// import ButtonDescargarArchivo from "src/components/ButtonDescargarArchivo.vue";
+import ListArchivos from "src/components/ListArchivos.vue";
 
-const emits = defineEmits(["save"]);
+const emits = defineEmits(["save", "deleteFile"]);
 
 const show = ref(false);
 const loading = ref(false);

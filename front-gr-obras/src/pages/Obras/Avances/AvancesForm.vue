@@ -72,37 +72,7 @@
 
           <div class="row" v-show="edit">
             <div class="col q-py-xs">
-              <q-list bordered class="rounded-borders q-mx-sm">
-                <q-item-label header>Archivos cargados</q-item-label>
 
-                <q-item v-for="(archivo, i) in form.archivos" :key="i">
-                  <q-item-section avatar top>
-                    <q-icon name="attach_file" color="black" size="34px" />
-                  </q-item-section>
-
-                  <q-item-section top>
-                    <q-item-label lines="1">
-                      {{ archivo.nombre }} - {{ archivo.size }}
-                      <span class="text-grey-8"><q-icon name="picture_as_pdf" /></span>
-                    </q-item-label>
-                    <q-item-label caption lines="1">
-                      <span class="text-weight-medium">{{ archivo.desc }}</span>
-                    </q-item-label>
-                    <!-- <q-item-label lines="1" class="q-mt-xs text-body2 text-weight-bold text-primary text-uppercase">
-                      <span class="cursor-pointer">Cesar in GitHub </span>
-                    </q-item-label> -->
-                  </q-item-section>
-
-                  <q-item-section top side>
-                    <div class="text-grey-8 q-gutter-sm">
-                      <q-btn @click="descargar(archivo)" size="11px" dense round icon="download" color="green" outline />
-                      <q-btn @click="eliminar(archivo.id)" size="11px" dense round icon="delete" color="red" outline />
-                    </div>
-                  </q-item-section>
-                </q-item>
-
-
-              </q-list>
             </div>
           </div>
 
@@ -161,33 +131,6 @@ function reset() {
 }
 function setErrors(row) {
   // errors.value.nombre = row.nombre[0];
-}
-
-const descargar = (archivo) => {
-  if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'pdf'].includes(archivo.extension)) {
-    window.open(archivo.url, '_blank')
-  } else {
-    window.location.href = archivo.url;
-  }
-};
-async function eliminar(id) {
-  $q.dialog({
-    title: "Confirm",
-    message:
-      "¿Estas seguro de eliminar este registro? Este proceso es irreversible.",
-    cancel: true,
-    persistent: true,
-  }).onOk(async () => {
-    await ArchivosService.delete(id);
-    $q.notify({
-      type: 'positive',
-      message: 'Eliminado con Exito.',
-      position: 'top-right',
-      progress: true,
-      timeout: 1000,
-    })
-    emits("deleteFile", form.value.id);
-  });
 }
 
 function updateObra(event) {

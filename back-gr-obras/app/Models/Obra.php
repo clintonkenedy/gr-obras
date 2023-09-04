@@ -19,14 +19,21 @@ class Obra extends Model
     'dura_dias',
     'fec_ini',
     'fec_fin',
+    'pim',
+    'saldo_asig',
     'ubigeo_cod',
     'coordinador_id',
     'residente_id',
     'economista_id',
   ];
 
-  public function obras()
+  public function gastos()
   {
     return $this->belongsToMany("App\Models\Gasto", "gasto_presupuesto_obra");
+  }
+
+  public function files()
+  {
+    return $this->hasMany('App\Models\Archivo', 'obra_id');
   }
 }
