@@ -2,7 +2,8 @@
     <div class="col-12 col-sm-4 q-px-xs">
         <q-select @update:model-value="updateDepartamento($event)" v-model="modelDepartamento" borderless dense
             debounce="300" outlined use-input hide-selected fill-input input-debounce="0" label="Departamento"
-            :options="optionsDepartamentos" option-label="nombre" option-value="id" @filter="filterDepartamentos">
+            :options="optionsDepartamentos" option-label="nombre" option-value="id" @filter="filterDepartamentos"
+            :disable="disabled">
             <template v-slot:no-option>
                 <q-item>
                     <q-item-section class="text-grey">
@@ -15,7 +16,7 @@
     <div class="col-12 col-sm-4 q-px-xs">
         <q-select @update:model-value="updateProvincia($event)" v-model="modelProvincia" borderless dense debounce="300"
             outlined use-input hide-selected fill-input input-debounce="0" label="Provincia" :options="optionsProvincias"
-            option-label="nombre" option-value="id" @filter="filterProvincias">
+            option-label="nombre" option-value="id" @filter="filterProvincias" :disable="disabled">
             <template v-slot:no-option>
                 <q-item>
                     <q-item-section class="text-grey">
@@ -28,7 +29,7 @@
     <div class="col-12 col-sm-4 q-px-xs">
         <q-select @update:model-value="updateDistrito($event)" v-model="modelDistrito" borderless dense debounce="300"
             outlined use-input hide-selected fill-input input-debounce="0" label="Distrito" :options="optionsDistritos"
-            option-label="nombre" option-value="id" @filter="filterDistritos">
+            option-label="nombre" option-value="id" @filter="filterDistritos" :disable="disabled">
             <template v-slot:no-option>
                 <q-item>
                     <q-item-section class="text-grey">
@@ -50,6 +51,7 @@ const emits = defineEmits(["selectedItem"]);
 //Props
 const props = defineProps({
     ubigeo_cod: { type: String, default: null },
+    disabled: { type: Boolean, default: false }
 });
 
 //Estados reactivos
