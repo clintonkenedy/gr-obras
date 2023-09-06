@@ -26,7 +26,7 @@ return new class extends Migration
             $table->char('celular', 9)->nullable();
 
             $table->unsignedBigInteger('administrativo_id')->nullable();
-            $table->foreign('administrativo_id')->references('id')->on('administrativos')->nullOnDelete();
+            $table->foreign('administrativo_id')->references('id')->on('users')->nullOnDelete();
 
             $table->unsignedBigInteger('trabajador_id')->nullable();
             $table->foreign('trabajador_id')->references('id')->on('trabajadores')->nullOnDelete();

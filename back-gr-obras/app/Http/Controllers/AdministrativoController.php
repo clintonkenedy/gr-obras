@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Administrativo;
+use App\Http\Requests\AdministrativoRequest;
+use App\Models\Persona;
+use App\Models\Profesion;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdministrativoController extends Controller
@@ -12,9 +15,17 @@ class AdministrativoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Administrativo::paginate($this->getPageSize());
+        return $this->generateViewSetList(
+            $request,
+            User::query()
+                ->leftJoin('personas', 'users.id', '=', 'personas.administrativo_id')
+                ->select('users.*', 'personas.nombre_completo AS persona'),
+            [],
+            ['id', 'tipo', 'name', 'email', 'profesion', 'condicion', 'personas.nombre_completo'],
+            ['id', 'tipo', 'name', 'email', 'profesion', 'condicion', 'personas.nombre_completo']
+        );
     }
 
     /**
@@ -23,9 +34,22 @@ class AdministrativoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AdministrativoRequest $request)
     {
-        return response(Administrativo::create($request->all()), 201);
+        $request->validated();
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'tipo' => $request->tipo,
+            'profesion' => $request->profesion,
+            'condicion' => $request->condicion
+        ]);
+        Persona::find($request->persona_id)->update([
+            'administrativo_id' => $user->id,
+        ]);
+        $user->syncRoles($request->rolesSelected);
+        return response()->json([$user->save()], 201);
     }
 
     /**
@@ -36,7 +60,15 @@ class AdministrativoController extends Controller
      */
     public function show($id)
     {
-        return response(Administrativo::find($id));
+        $user = User::leftJoin('personas', 'users.id', '=', 'personas.administrativo_id')
+            ->select('users.*', 'personas.id AS persona_id', 'personas.nombre_completo AS persona')
+            ->where('users.id', $id)
+            ->first();
+        $user->profesion_id = Profesion::where('nombre', $user->profesion)->first()->id;
+        return response()->json([
+            'user' => $user,
+            'rolesSelected' => $user->roles->pluck('id'),
+        ]);
     }
 
     /**
@@ -46,10 +78,23 @@ class AdministrativoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AdministrativoRequest $request, $id)
     {
-        Administrativo::find($id)->update($request->all());
-        return response([$request, $id]);
+        $request->validated();
+        $user = User::find($id);
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password ? bcrypt($request->password) : $user->password,
+            'tipo' => $request->tipo,
+            'profesion' => $request->profesion,
+            'condicion' => $request->condicion
+        ]);
+        $user->syncRoles($request->rolesSelected);
+        Persona::find($request->persona_id)->update([
+            'administrativo_id' => $request->id,
+        ]);
+        return response()->json($user);
     }
 
     /**
@@ -60,7 +105,7 @@ class AdministrativoController extends Controller
      */
     public function destroy($id)
     {
-        Administrativo::destroy($id);
-        return response($id);
+        $user = User::find($id);
+        return response()->json($user->delete());
     }
 }
