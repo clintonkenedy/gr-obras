@@ -7,23 +7,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class Avance extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $table = 'avances';
-    protected $fillable = [
-      'tipo',
-      'fecha',
-      'estado',
-      'avance_fisico_km',
-      'avance_fisico_npisos',
-      'avance_fisico_metros',
-      'avance_fisico_otros',
-      'avance_financiero',
-      'obra_id',
-      'cronograma_id'
-    ];
+  protected $table = 'avances';
+  protected $fillable = [
+    // 'num_semana',
+    'codigo',
+    'codigo_semana',
 
-    public function archivos(){
-      return $this->hasMany('App\Models\Archivo', 'avance_id');
-    }
+    'monto_prog',
+    'porcentaje_prog',
+    'acum_prog',
+
+    'monto_fisic',
+    'porcentaje_fisc',
+    'acum_fisc',
+
+    'monto_finan',
+    'porcentaje_finan',
+    'acum_finan',
+
+    'avance_mes_id'
+  ];
 }

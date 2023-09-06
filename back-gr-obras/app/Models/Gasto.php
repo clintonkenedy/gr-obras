@@ -20,6 +20,7 @@ class Gasto extends Model
     'gastos_monito_segui',
     'gastos_elabo_expediente',
     'gastos_evalu_expediente',
+    'presupuesto_id'
   ];
 
   public function obras()

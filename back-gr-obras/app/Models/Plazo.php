@@ -16,5 +16,6 @@ class Plazo extends Model
       'fec_fin',
       'fecha',
       'comentario',
+      'obra_id'
     ];
 }

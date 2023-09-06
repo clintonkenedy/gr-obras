@@ -32,6 +32,21 @@ class Obra extends Model
     return $this->belongsToMany("App\Models\Gasto", "gasto_presupuesto_obra");
   }
 
+  public function avancemeses()
+  {
+    return $this->hasMany("App\Models\AvanceMes", "obra_id");
+  }
+
+  public function presupuestos()
+  {
+    return $this->hasMany("App\Models\Presupuesto", "obra_id");
+  }
+
+  public function plazos()
+  {
+    return $this->hasMany("App\Models\Plazo", "obra_id");
+  }
+
   public function files()
   {
     return $this->hasMany('App\Models\Archivo', 'obra_id');

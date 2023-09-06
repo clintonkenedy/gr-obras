@@ -25,8 +25,8 @@ return new class extends Migration
             $table->unsignedBigInteger('obra_id')->nullable();
             $table->foreign('obra_id')->references('id')->on('obras')->onDelete('cascade');
 
-            $table->unsignedBigInteger('avance_id')->nullable();
-            $table->foreign('avance_id')->references('id')->on('avances')->onDelete('cascade');
+            $table->unsignedBigInteger('avance_mes_id')->nullable();
+            $table->foreign('avance_mes_id')->references('id')->on('avances')->onDelete('cascade');
 
             $table->timestamps();
         });

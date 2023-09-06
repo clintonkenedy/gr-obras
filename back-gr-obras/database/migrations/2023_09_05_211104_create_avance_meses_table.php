@@ -13,17 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('avances', function (Blueprint $table) {
+        Schema::create('avance_meses', function (Blueprint $table) {
             $table->id();
-            $table->enum('tipo', ['programado', 'físico', 'financiero']);
-            $table->date('fecha');
-            // $table->enum('estado', ['en proceso', 'finalizado']);
-            $table->float('monto', 14, 2)->nullable();
-            $table->float('porcentaje', 14, 2)->nullable();
-            $table->float('acum', 14, 2)->nullable();
+            $table->string('codigo', 20)->comment('junio2023');
+            $table->float('sum_programado', 14, 2)->nullable();
+            $table->float('sum_fisico', 14, 2)->nullable();
+            $table->float('sum_financiero', 14, 2)->nullable();
+            $table->float('saldo', 14, 2)->nullable()->comment('Relacionado con el Costo Directo');
 
             $table->unsignedBigInteger('obra_id')->nullable();
             $table->foreign('obra_id')->references('id')->on('obras')->nullOnDelete();
+
+            $table->index('obra_id');
 
             $table->timestamps();
         });
@@ -36,6 +37,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('avances');
+        Schema::dropIfExists('avance_meses');
     }
 };

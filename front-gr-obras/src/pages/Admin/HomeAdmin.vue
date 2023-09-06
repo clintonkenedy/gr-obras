@@ -149,7 +149,7 @@
         Control de Curva "S" (Curva "S")
       </div>
       <q-card-section class="text-center row items-center justify-center q-pa-sm">
-        <div style="width: 100%; height: 300px;">
+        <div style="width: 100%; height: 500px;">
           <Line id="my-chart-id" :options="chartOptions" :data="lineChartData" :style="myStyles" />
         </div>
       </q-card-section>
@@ -173,147 +173,10 @@
       </q-card>
     </div>
   </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <!-- <div class="row q-mt-lg">
-    <div class="col">
-      <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
-        <div class="absolute-bottom text-subtitle1 text-center">
-          Foto
-        </div>
-      </q-img>
-    </div>
-    <div class="col q-ma-md">
-      <div class="row">
-        <div class="col q-ma-md">
-          <q-list dense bordered padding class="rounded-borders">
-            <q-item clickable v-ripple>
-              <q-item-section>
-                <b>Meta:</b>
-              </q-item-section>
-            </q-item>
-
-            <q-item clickable v-ripple>
-              <q-item-section>
-                32 AULAS PEDAGÓGICAS CON EQUIPAMIENTO Y MOBILIARIO
-              </q-item-section>
-            </q-item>
-
-            <q-item clickable v-ripple>
-              <q-item-section>
-                5 LABORATORIOS Y AMBIENTES COMPONENTES
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </div>
-        <div class="col q-ma-md">
-          <q-list dense bordered padding class="rounded-borders">
-            <q-item clickable v-ripple>
-              <q-item-section>
-
-              </q-item-section>
-            </q-item>
-
-            <q-item clickable v-ripple>
-              <q-item-section>
-                <b>EXPEDIENTE INICIAL:</b> $/. 113,047,218
-              </q-item-section>
-            </q-item>
-
-            <q-item clickable v-ripple>
-              <q-item-section>
-                <b>EXPEDIENTE MODIFICADO:</b> $/. 136,281,040
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col q-ma-md">
-          <q-list dense bordered padding class="rounded-borders">
-            <q-item clickable v-ripple>
-              <q-item-section>
-                <b>BENEFICIARIOS:</b>
-              </q-item-section>
-            </q-item>
-
-            <q-item clickable v-ripple>
-              <q-item-section>
-                20,966 ESTUDIANTES
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </div>
-        <div class="col q-ma-md">
-          <Bar :data="data" :options="options" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col q-ma-md">
-          <q-list dense bordered padding class="rounded-borders">
-
-            <q-item clickable v-ripple>
-              <q-item-section>
-                <b>PLAZO DE EJECUCIÓN INICIAL:</b> 465 Días Calendario
-              </q-item-section>
-            </q-item>
-
-            <q-item clickable v-ripple>
-              <q-item-section>
-                <b>PLAZO DE EJECUCIÓN MODIFICADO:</b> 1826 Días Calendario
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </div>
-        <div class="col q-ma-md">
-          <q-list dense bordered padding class="rounded-borders">
-            <q-item clickable v-ripple>
-              <q-item-section>
-                <b>PIM:</b> 4,245,915
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col q-ma-md">
-          <q-list dense bordered padding class="rounded-borders">
-            <q-item clickable v-ripple>
-              <q-item-section>
-                <b>MODALIDAD DE EJECUCIÓN:</b> POR CONTRATA
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </div>
-        <div class="col q-ma-md">
-          <q-list dense bordered padding class="rounded-borders">
-            <q-item clickable v-ripple>
-              <q-item-section>
-                <b>MONTO DE INVERSIÓN:</b> S/. 30,955,119
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </div>
-      </div>
-
-    </div>
-  </div> -->
+  <button @click="obtenerDatos()">Presionar</button>
+  <!-- {{ lineChartData.datasets[0].length }} <br>
+  {{ lineChartData.datasets[1].length }} <br> -->
+  {{ lineChartData.datasets[2] }} <br>
 </template>
 
 <script setup>
@@ -332,6 +195,7 @@ import {
   LineElement
 } from 'chart.js'
 import { Bar, Line } from 'vue-chartjs';
+import AvancesMesService from 'src/services/AvancesMesService';
 
 //Estados reactivos
 const obra = ref({});
@@ -339,32 +203,32 @@ const obra = ref({});
 //Gráfico
 ChartJS.register(CategoryScale, PointElement, LineElement, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const options = {
-  responsive: true,
-  maintainAspectRatio: false
-}
+// const options = {
+//   responsive: true,
+//   maintainAspectRatio: false
+// }
 
 const myStyles = {
-  height: `300px`,
+  height: `500px`,
   width: '100%',
   position: 'relative'
 }
 
-const data = {
-  labels: [
-    'Físico',
-    'Financiero',
-  ],
-  datasets: [
-    {
-      label: '(%)',
-      backgroundColor: ['#f87979', '#000'],
-      data: [56.5, 28.9]
-    },
-  ]
-}
+// const data = {
+//   labels: [
+//     'Físico',
+//     'Financiero',
+//   ],
+//   datasets: [
+//     {
+//       label: '(%)',
+//       backgroundColor: ['#f87979', '#000'],
+//       data: [56.5, 28.9]
+//     },
+//   ]
+// }
 
-const lineChartData = {
+const lineChartData = ref({
   labels: ['Inicio', 'jun-23', 'jun-23', 'jun-23', 'jun-23', 'jul-23', 'jul-23', 'jul-23', 'jul-23', 'ago-23', 'ago-23', 'ago-23', 'ago-23'],
   datasets: [
     {
@@ -392,5 +256,54 @@ const lineChartData = {
       data: [0, 3, 7, 12, 17, 22]
     }
   ]
-};
+});
+
+onMounted(() => {
+  // obtenerDatos();
+})
+
+async function obtenerDatos() {
+  try {
+    const res = await AvancesMesService.get(1);
+    obra.value = res;
+    console.log(res);
+    lineChartData.value =
+    {
+      labels: res.avances.map(e => e.codigo),
+      datasets: [
+        {
+          label: 'Programado',
+          backgroundColor: '#ef4444',
+          borderColor: '#ef4444',
+          borderWidth: 1,
+          pointBorderColor: '#ef4444',
+          data: res.avances.map(e => e.acum_prog)
+        },
+        {
+          label: 'Ejecutado',
+          backgroundColor: '#3b82f6',
+          borderColor: '#3b82f6',
+          borderWidth: 1,
+          pointBorderColor: '#3b82f6',
+          data: res.avances.map(e => e.acum_fisc)
+        },
+        {
+          label: 'Financiero',
+          backgroundColor: '#22c55e',
+          borderColor: '#22c55e',
+          borderWidth: 1,
+          pointBorderColor: '#22c55e',
+          data: res.avances.map(e => e.acum_finan)
+        }
+      ]
+    };
+
+    // lineChartData.value.labels = res.avances.map(e => e.codigo);
+    // lineChartData.value.datasets[0] = res.avances.map(e => e.acum_prog);
+    // lineChartData.value.datasets[1] = res.avances.map(e => e.acum_fisc);
+    // lineChartData.value.datasets[2] = res.avances.map(e => e.acum_finan);
+  } catch (e) {
+    console.log(e);
+  }
+}
 </script>

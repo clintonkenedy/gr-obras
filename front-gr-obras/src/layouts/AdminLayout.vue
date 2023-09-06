@@ -131,15 +131,6 @@
               <q-item-section>Obras</q-item-section>
             </q-item>
 
-            <q-item :to="{ name: 'Cronogramas' }" clickable v-ripple :active="link === 'cronogramas'" @click="link = 'cronogramas'"
-              :inset-level="0.5" active-class="bg-primary text-white">
-              <q-item-section avatar>
-                <q-icon name="edit_calendar" />
-              </q-item-section>
-
-              <q-item-section>Cronogramas</q-item-section>
-            </q-item>
-
             <q-item :to="{ name: 'Avances' }" clickable v-ripple :active="link === 'avances'" @click="link = 'avances'"
               :inset-level="0.5" active-class="bg-primary text-white">
               <q-item-section avatar>

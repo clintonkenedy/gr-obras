@@ -27,25 +27,7 @@ class AvanceController extends Controller
      */
     public function store(Request $request)
     {
-        $avance = Avance::create($request->all());
-        if ($request->hasFile('files')) {
-            foreach ($request->file('files') as $f) {
-                $nombre = Str::random(5) . '.' . $f->getClientOriginalExtension();
-                // Guardando archivo
-                $f->storeAs('public', $nombre);
-                Archivo::create([
-                    'extension' => $f->getClientOriginalExtension(),
-                    'es_plantilla' => false,
-                    'nombre' => $nombre,
-                    'url' => url('storage/' . $nombre),
-                    'desc' => pathinfo($f->getClientOriginalName(), PATHINFO_FILENAME),
-                    'size' => round($f->getSize() / (1024 * 1024), 2) . 'MB',
-                    'avance_id' => $avance->id
-                ]);
-            }
-        }
-
-        return response($avance, 201);
+        return response(Avance::create($request->all()), 201);
     }
 
     /**
@@ -56,8 +38,8 @@ class AvanceController extends Controller
      */
     public function show($id)
     {
-        $avance = Avance::with('archivos')->find($id, ['*']);
-        return response($avance);
+        $avance = Avance::find($id);
+        return response($avance, 200);
     }
 
     /**
@@ -69,27 +51,8 @@ class AvanceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $avance = Avance::find($id);
-        $avance->update($request->all());
-        if ($request->hasFile('files')) {
-            // return response($request->file('files'));
-            foreach ($request->file('files') as $f) {
-                $nombre = Str::random(5) . '.' . $f->getClientOriginalExtension();
-                // Guardando archivo
-                $f->storeAs('public', $nombre);
-                Archivo::create([
-                    'extension' => $f->getClientOriginalExtension(),
-                    'es_plantilla' => false,
-                    'nombre' => $nombre,
-                    'url' => url('storage/' . $nombre),
-                    'desc' => pathinfo($f->getClientOriginalName(), PATHINFO_FILENAME),
-                    'size' => round($f->getSize() / (1024 * 1024), 2) . 'MB',
-                    'avance_id' => $avance->id
-                ]);
-            }
-        }
-
-        return response([$avance, $id]);
+        $avanceMes = Avance::find($id)->update($request->all());
+        return response([$avanceMes, $id]);
     }
 
     /**

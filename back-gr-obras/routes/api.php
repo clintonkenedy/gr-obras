@@ -16,6 +16,7 @@ use App\Http\Controllers\ValorizacionController;
 use App\Http\Controllers\Api\V1\PermissionController as PermissionsControllerV1;
 use App\Http\Controllers\Api\V1\RoleController as RoleControllerV1;
 use App\Http\Controllers\Api\V1\UserController as UserControllerV1;
+use App\Http\Controllers\AvanceMesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -61,6 +62,7 @@ Route::group(['prefix' => 'obras', 'middleware' => 'auth:api'], function () {
     Route::apiResource('administrativo', AdministrativoController::class);
     Route::apiResource('archivo', ArchivoController::class);
     Route::apiResource('avance', AvanceController::class);
+    Route::apiResource('avance_mes', AvanceMesController::class);
     Route::apiResource('cargo', CargoController::class);
     Route::apiResource('cronograma', CronogramaController::class);
     Route::apiResource('obra', ObraController::class);

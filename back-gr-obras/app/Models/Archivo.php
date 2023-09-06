@@ -21,10 +21,10 @@ class Archivo extends Model
     'size',
     'url',
     'obra_id',
-    'avance_id',
+    'avance_mes_id',
   ];
 
-  public static function AgregarArchivos(Request $request, $obra_id = null, $avance_id = null)
+  public static function AgregarArchivos(Request $request, $obra_id = null, $avance_mes_id = null)
   {
     if ($request->hasFile('files')) {
       foreach ($request->file('files') as $f) {
@@ -42,7 +42,7 @@ class Archivo extends Model
           'desc' => pathinfo($f->getClientOriginalName(), PATHINFO_FILENAME),
           'size' => round($f->getSize() / (1024 * 1024), 2) . 'MB',
           'obra_id' => $obra_id,
-          'avance_id' => $avance_id
+          'avance_mes_id' => $avance_mes_id
         ]);
       }
     }

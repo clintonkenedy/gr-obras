@@ -11,13 +11,15 @@ class Presupuesto extends Model
 
     protected $table = 'presupuestos';
     protected $fillable = [
-      'fec',
-      'costo_actualizado',
-      'ejec_acumulado',
-      'pia',
-      'sal_asig',
-      'fec_asig',
-      'pia_inc',
+      'ppto',
+      'adicional',
+      'ejecutado',
+      'saldo',
+      'fecha',
       'obra_id',
     ];
+    public function gastos()
+    {
+      return $this->hasMany("App\Models\Gasto", "presupuesto_id");
+    }
 }

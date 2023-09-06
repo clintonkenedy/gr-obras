@@ -23,6 +23,9 @@ return new class extends Migration
             $table->float('gastos_monito_segui', 14, 2)->nullable();
             $table->float('gastos_elabo_expediente', 14, 2)->nullable();
             $table->float('gastos_evalu_expediente', 14, 2)->nullable();
+
+            $table->unsignedBigInteger('presupuesto_id')->nullable();
+            $table->foreign('presupuesto_id')->references('id')->on('presupuestos')->nullOnDelete();
             $table->timestamps();
         });
     }

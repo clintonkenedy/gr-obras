@@ -25,7 +25,6 @@ const routes = [
 
       { path: '/profesiones', name: 'Profesiones', component: () => import('pages/profesiones/ProfesionesLista.vue') },
       { path: '/obras', name: 'Obras', component: () => import('pages/Obras/ObrasLista.vue') },
-      { path: '/cronogramas', name: 'Cronogramas', component: () => import('pages/Obras/Cronogramas/CronogramasLista.vue') },
       { path: '/avances', name: 'Avances', component: () => import('pages/Obras/Avances/AvancesLista.vue') },
       { path: '/cargos', name: 'Cargos', component: () => import('pages/Cargos/CargosLista.vue') },
       { path: '/archivos', name: 'Archivos', component: () => import('pages/Archivos/ArchivosLista.vue') },

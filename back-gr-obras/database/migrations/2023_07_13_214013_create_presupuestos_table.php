@@ -15,13 +15,11 @@ return new class extends Migration
     {
         Schema::create('presupuestos', function (Blueprint $table) {
             $table->id();
-            $table->date('fec');
-            $table->decimal('costo_actualizado', 14, 2);
-            $table->decimal('ejec_acumulado', 14, 2);
-            $table->enum('pia', ['con pia', 'sin pia']);
-            $table->decimal('sal_asig', 14, 2);
-            $table->date('fec_asig');
-            $table->string('pia_inc', 191);
+            $table->float('ppto', 14, 2);
+            $table->float('adicional', 14, 2)->nullable();
+            $table->float('ejecutado', 14, 2);
+            $table->float('saldo', 14, 2);
+            $table->date('fecha')->nullable();
             
             $table->unsignedBigInteger('obra_id')->nullable();
             $table->foreign('obra_id')->references('id')->on('obras')->nullOnDelete();
