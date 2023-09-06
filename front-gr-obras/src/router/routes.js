@@ -28,6 +28,7 @@ const routes = [
       { path: '/avances', name: 'Avances', component: () => import('pages/Obras/Avances/AvancesLista.vue') },
       { path: '/cargos', name: 'Cargos', component: () => import('pages/Cargos/CargosLista.vue') },
       { path: '/archivos', name: 'Archivos', component: () => import('pages/Archivos/ArchivosLista.vue') },
+      { path: '/administrativos', name: 'Administrativos', component: () => import('pages/Administrativos/AdministrativosLista.vue') },
       { path: '/trabajadores', name: 'Trabajadores', component: () => import('pages/Trabajadores/TrabajadoresLista.vue') },
       { path: '/cargos', name: 'Cargos', component: () => import('pages/Cargos/CargosLista.vue') },
       { path: '/personas', name: 'Personas', component: () => import('pages/Personas/PersonasLista.vue') },

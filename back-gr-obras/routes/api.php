@@ -50,6 +50,8 @@ Route::apiResources([
     'v1/usuarios' => UserControllerV1::class,
 ]);
 
+Route::apiResource('administrativo', AdministrativoController::class);
+
 
 //Ubigeo
 Route::get('ubigeo', [UbigeoController::class, 'getUbigeo']);
@@ -59,7 +61,6 @@ Route::get('distritos', [UbigeoController::class, 'getDistritos']);
 
 Route::group(['prefix' => 'obras', 'middleware' => 'auth:api'], function () {
     Route::apiResource('roles', RoleController::class);
-    Route::apiResource('administrativo', AdministrativoController::class);
     Route::apiResource('archivo', ArchivoController::class);
     Route::apiResource('avance', AvanceController::class);
     Route::apiResource('avance_mes', AvanceMesController::class);

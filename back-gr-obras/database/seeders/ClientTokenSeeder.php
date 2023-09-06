@@ -16,7 +16,6 @@ class ClientTokenSeeder extends Seeder
      */
     public function run()
     {
-        //
         $user = User::create([
             'name' => 'password',
             'email' => 'password@gmail.com',

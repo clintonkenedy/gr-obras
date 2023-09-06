@@ -24,7 +24,13 @@ class AdministrativoRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'tipo' => 'required',
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,' . $this->id,
+            'password' => ($this->id) ? 'min:8' : 'required|min:8',
+            'persona_id' => 'required',
+            'profesion' => 'required',
+            'condicion' => 'required'
         ];
     }
 }
