@@ -13,9 +13,8 @@
         <q-card-section class="q-pt-sm">
           <div class="text-subtitle2">1.- Datos Generales:</div>
           <div class="text-h5 q-mt-sm q-mb-md">
-            <SelectObra></SelectObra>
+            <SelectObra ref="obraRef" @selectedItem="e => obtenerDatos(e)"></SelectObra>
           </div>
-
           <q-markup-table separator="cell" flat bordered>
             <thead>
               <tr>
@@ -23,7 +22,7 @@
                   <div class="row justify-between items-center">
                     <div>
                       <q-icon name="las la-calendar" size="sm" class="q-mr-xs" />
-                      <strong>{{ obra.codigo }} - {{ obra.nombre_proyecto }}</strong> |
+                      <strong>{{ obra.cui }} - {{ obra.nombre_proyecto }}</strong> |
                       Meta: {{ obra.meta }}
                     </div>
                     <div>
@@ -53,7 +52,7 @@
                 <td style="width:25%;">
                   <div class="row q-pr-md">
                     <q-icon name="las la-clock" size="xs" class="q-mr-xs" />
-                    <span>Inicio: <br> <span class="text-blue-grey-6">{{ obra.fec_inicio }}</span></span>
+                    <span>Inicio: <br> <span class="text-blue-grey-6">{{ obra.fec_ini }}</span></span>
                   </div>
                 </td>
                 <td style="width:25%;">
@@ -67,12 +66,12 @@
           </q-markup-table>
 
           <div class="row justify-between text-h5 q-mt-md">
-            <SelectUbigeo :disabled="true"></SelectUbigeo>
+            <SelectUbigeo ref="ubigeoSelectRef" :ubigeo_cod="obra.ubigeo_cod" :disabled="true"></SelectUbigeo>
           </div>
         </q-card-section>
         <q-separator />
         <q-card-actions>
-          <q-btn flat color="primary">
+          <q-btn flat color="primary" to="/obras">
             Acceder
           </q-btn>
         </q-card-actions>
@@ -173,10 +172,6 @@
       </q-card>
     </div>
   </div>
-  <button @click="obtenerDatos()">Presionar</button>
-  <!-- {{ lineChartData.datasets[0].length }} <br>
-  {{ lineChartData.datasets[1].length }} <br> -->
-  {{ lineChartData.datasets[2] }} <br>
 </template>
 
 <script setup>
@@ -199,6 +194,8 @@ import AvancesMesService from 'src/services/AvancesMesService';
 
 //Estados reactivos
 const obra = ref({});
+const obraRef = ref(null);
+const ubigeoSelectRef = ref(null);
 
 //Gráfico
 ChartJS.register(CategoryScale, PointElement, LineElement, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -262,11 +259,11 @@ onMounted(() => {
   // obtenerDatos();
 })
 
-async function obtenerDatos() {
+async function obtenerDatos(e) {
   try {
-    const res = await AvancesMesService.get(1);
-    obra.value = res;
-    console.log(res);
+    obra.value = e;
+    const res = await AvancesMesService.get(obra.value.id);
+    ubigeoSelectRef.value.getUbigeo(obra.value.ubigeo_cod);
     lineChartData.value =
     {
       labels: res.avances.map(e => e.codigo),
@@ -297,13 +294,9 @@ async function obtenerDatos() {
         }
       ]
     };
-
-    // lineChartData.value.labels = res.avances.map(e => e.codigo);
-    // lineChartData.value.datasets[0] = res.avances.map(e => e.acum_prog);
-    // lineChartData.value.datasets[1] = res.avances.map(e => e.acum_fisc);
-    // lineChartData.value.datasets[2] = res.avances.map(e => e.acum_finan);
   } catch (e) {
     console.log(e);
   }
 }
+
 </script>

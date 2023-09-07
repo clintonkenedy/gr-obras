@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('fecha')->nullable();
             
             $table->unsignedBigInteger('obra_id')->nullable();
-            $table->foreign('obra_id')->references('id')->on('obras')->nullOnDelete();
+            $table->foreign('obra_id')->references('id')->on('obras')->onDelete('cascade');
             $table->timestamps();
         });
     }

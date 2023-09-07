@@ -27,17 +27,17 @@ class Obra extends Model
     'economista_id',
   ];
 
-  public function gastos()
-  {
-    return $this->belongsToMany("App\Models\Gasto", "gasto_presupuesto_obra");
-  }
+  // public function gastos()
+  // {
+  //   return $this->hasMany("App\Models\Gasto", "gasto_presupuesto_obra");
+  // }
 
   public function avancemeses()
   {
     return $this->hasMany("App\Models\AvanceMes", "obra_id");
   }
 
-  public function presupuestos()
+  public function presupuesto()
   {
     return $this->hasMany("App\Models\Presupuesto", "obra_id");
   }

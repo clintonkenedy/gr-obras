@@ -71,6 +71,7 @@
               outline
               color="blue"
               round
+              @click="subirAvances(props.row)"
               icon="meeting_room"
               class="q-mr-xs"
             />
@@ -97,12 +98,14 @@
     </q-table>
   </div>
   <ObrasForm ref="obrasformRef" @save="save()" @deleteFile="id => editar(id)"></ObrasForm>
+  <AvancesMesForm ref="avanceMesformRef"/>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
 import ObrasService from "src/services/ObrasService";
 import ObrasForm from "./ObrasForm.vue";
+import AvancesMesForm from "./AvancesMesForm.vue";
 import { useQuasar } from "quasar";
 const $q = useQuasar();
 const columns = [
@@ -152,6 +155,7 @@ const columns = [
 
 const tableRef = ref();
 const obrasformRef = ref();
+const avanceMesformRef = ref();
 const rows = ref([]);
 const filter = ref("");
 const loading = ref(false);
@@ -213,6 +217,11 @@ async function save() {
   }
 }
 
+function subirAvances(obra){
+  avanceMesformRef.value.show = true;
+  avanceMesformRef.value.obra = obra;
+  avanceMesformRef.value.obtenerAvanceMeses();
+}
 async function editar(id) {
   obrasformRef.value.show = true;
   const row = await ObrasService.get(id);

@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Archivo;
+use App\Models\Gasto;
 use App\Models\Obra;
+use App\Models\Presupuesto;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -28,23 +32,22 @@ class ObraController extends Controller
      */
     public function store(Request $request)
     {
-        $obra = Obra::create([
-            'cui' => $request->cui,
-            'meta' => $request->meta,
-            'nombre_proyecto' => $request->nombre_proyecto,
-            'sector' => $request->sector,
-            'estado_obra' => $request->estado_obra,
-            'dura_dias' => $request->dura_dias,
-            'fec_ini' => $request->fec_ini,
-            'fec_fin' => $request->fec_fin,
-            'ubigeo_cod' => $request->ubigeo_cod,
-            'coordinador_id' => $request->coordinador_id,
-            'residente_id' => $request->residente_id,
-            'economista_id' => $request->economista_id,
-        ]);
-
-        Archivo::AgregarArchivos($request, obra_id: $obra->id);
-        return response($obra, 201);
+        $obra = Obra::create($request->all());
+        try {
+            $presupuesto = Presupuesto::create($request->presupuesto);
+            $presupuesto->fecha = Carbon::now()->toDateTimeString();
+            $presupuesto->obra_id = $obra->id;
+            $presupuesto->save();
+            $gasto = Gasto::create($request->gasto);
+            $gasto->presupuesto_id = $presupuesto->id;
+            $gasto->save();
+            // $gasto = Gasto::create($request->all());
+            Archivo::AgregarArchivos($request, obra_id: $obra->id);
+            return response($obra, 201);
+        } catch (Exception $e) {
+            $this->destroy($obra->id);
+            return response($e, 400);
+        }
     }
 
     /**
@@ -55,7 +58,10 @@ class ObraController extends Controller
      */
     public function show($id)
     {
-        $obra = Obra::with('files')->find($id, ['*']);
+        $obra = Obra::find($id);
+        $obra->presupuesto->reverse()->first();
+        $obra->presupuesto->reverse()->first()->gasto->reverse()->first();
+        $obra->files;
         return response($obra, 200);
     }
 
@@ -68,26 +74,15 @@ class ObraController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = json_decode($request->data);
+        $data = json_decode($request->data, true);
         //
         $obra = Obra::find($id);
-        $obra->update([
-            'cui' => $data->cui,
-            'meta' => $data->meta,
-            'nombre_proyecto' => $data->nombre_proyecto,
-            'sector' => $data->sector,
-            'estado_obra' => $data->estado_obra,
-            'dura_dias' => $data->dura_dias,
-            'fec_ini' => $data->fec_ini,
-            'fec_fin' => $data->fec_fin,
-            'ubigeo_cod' => $data->ubigeo_cod,
-            'coordinador_id' => $data->coordinador_id,
-            'residente_id' => $data->residente_id,
-            'economista_id' => $data->economista_id,
-        ]);
+        $obra->update($data);
+        Presupuesto::find($data['presupuesto']['id'])->update($data['presupuesto']);
+        Gasto::find($data['gasto']['id'])->update($data['gasto']);
 
         Archivo::AgregarArchivos($request, obra_id: $obra->id);
-        return response([$obra, $id]);
+        return response([$data, $id]);
     }
 
     /**

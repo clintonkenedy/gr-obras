@@ -18,7 +18,7 @@ class Presupuesto extends Model
       'fecha',
       'obra_id',
     ];
-    public function gastos()
+    public function gasto()
     {
       return $this->hasMany("App\Models\Gasto", "presupuesto_id");
     }
